@@ -80,14 +80,15 @@ class Prop {
 
 	color(src="white") {
 		this.img = null;
+		this.sheet = null;
 		this.col = src;
 	}
 	
 	sprite(src, fw=16) {
 		if (!src) this.color();
 		else {
-			this.img = new Image();
-			this.img.src = SRC_DIR + src;
+			this.sheet = new Image();
+			this.sheet.src = SRC_DIR + src;
 			this.frames = this.img % fw;
 		}
 	}
@@ -151,13 +152,18 @@ class Prop {
 class levelPart extends Prop {
 	constructor(x=0, y=0, w=16, h=16) {
 		super(x, y, w, h);
+		this.meta.physics.gravity = 0;
+	}
+}
+
+class debugPart extends Prop {
+	constructor(x=0, y=0, w=16, h=16) {
+		super(x, y, w, h);
 	}
 }
 
 function update() {
 	c.clearRect(0,0,cx,cy);
-	redrawSettings();
-	//redrawAmbient();
 	redrawProps();
 	if (SHOW_FPS) redrawFramecount();
 }
@@ -179,16 +185,14 @@ function redrawFramecount() {
 	fps = 1/delta;
 	c.strokeStyle = "white";
 	c.fillStyle = "black";
-	c.fillText(fps.toString(), cx-24, cy-24);
-	c.stroke();
+	c.strokeSize = 4;
+	c.fillText(fps.toString(), 0.8*cx, 0.8*cy);
 }
-
-function redrawSettings() {}
 
 // GAME CODE
 // Ground is an immovable prop
-let ground = new levelPart(0, cy, cx, level.ground);
-ground.meta.physics.gravity = null;
+//let ground = new levelPart(0, cy*level.ground, cx, cy*level.ground);
+let ground = new levelPart(0, 0, cx, cy);
 ground.color("green");
 
 // Start updating screen
