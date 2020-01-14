@@ -96,7 +96,7 @@ class Prop {
 		if (this.meta.physics.gravity) {
 			if (this.meta.physics.gravity === "default")
 			this.y += gravity - yv
-			else this.y += this.physics.gravity - yv;
+			else this.y += this.physics.gravity;
 		}
 		if (this.sheet) this.animate();
 		this.x += this.xv;
