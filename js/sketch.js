@@ -10,18 +10,17 @@ const MAX_FPS = 1;
 const FRAMETIME = Math.floor(1000/MAX_FPS);
 const DEFAULT_RESOLUTION = [1366, 768]; // School Chromebook
 
-let level = {
-	ground: 140,
-	friction: 0.8,
-	accel: 1.9,
-	gravity: 1,
-	maxfall: 10,
-}
-
 // Initialize Variables
 let lastFramecount, fps,
 	cx, cy, sx, sy, // Canvas w/h and stretching
-	props = [];
+	props = [],
+	level = {
+		ground: 20/100, // ground percentage of screen
+		friction: 0.8,
+		accel: 1.9,
+		gravity: 1,
+		maxfall: 10,
+	};
 
 // Canvas
 let canvas = document.getElementById("prop-canvas");
@@ -39,18 +38,28 @@ window.onload = window.onresize = function() {
 }
 
 class Prop {
-	constructor(x=0, y=0, w=16, h=16) {
+	constructor(x=0, y=0, w=16, h=16, yv=0, xv=0) {
 		this.x = x, this.y = y,
 		this.w = w, this.h = h,
+		this.xv = xv, this.yv = yv,
 		this.img = null,
 		this.sheet = null,
+		this.col = "white",
 		this.meta = {
+			physics: {
+				gravity: "default",
+			},
 			enabled: false,
 			flipped: false,
 			screenWrap: false,
 			borderBypass: false,
 		},
 		this.stretch = true;
+		this.border = {
+			active: false,
+			size: 4,
+			col: "red",
+		};
 		props.push(this);
 	}
 
@@ -69,7 +78,7 @@ class Prop {
 		}
 	}
 
-	color(src=white) {
+	color(src="white") {
 		this.img = null;
 		this.col = src;
 	}
@@ -84,12 +93,14 @@ class Prop {
 	}
 	
 	prepareUpdate() {
-		if (this.meta.physics) {
-			this.y += gravity - yvel;
+		if (this.meta.physics.gravity) {
+			if (this.meta.physics.gravity === "default")
+			this.y += gravity - yv
+			else this.y += this.physics.gravity - yv;
 		}
 		if (this.sheet) this.animate();
-		this.x += this.xvel;
-		this.y -= this.yvel;
+		this.x += this.xv;
+		this.y -= this.yv;
 		if (!this.meta.borderBypass) {
 			if (this.x + this.w > cx) {
 				this.x = cx - this.w;
@@ -123,9 +134,9 @@ class Prop {
 			this.sw, this.sh);
 		} else {
 			c.fillStyle = this.col;
-			if (this.border) {
+			if (this.border.active) {
 				c.strokeSize = this.border.size;
-				c.strokeStyle = this.border.color;
+				c.strokeStyle = this.border.col;
 			}
 			c.fillRect(this.x, this.y, this.sw, this.sh);
 		}
@@ -134,6 +145,12 @@ class Prop {
 	animate() {
 		// Function for choosing frames.
 		// Customize it to whatever you need.
+	}
+}
+
+class levelPart extends Prop {
+	constructor(x=0, y=0, w=16, h=16) {
+		super(x, y, w, h);
 	}
 }
 
@@ -168,11 +185,11 @@ function redrawFramecount() {
 
 function redrawSettings() {}
 
-// USER WRITTEN CODE
+// GAME CODE
 // Ground is an immovable prop
-let ground = new Prop(0, cy, cx, level.ground);
+let ground = new levelPart(0, cy, cx, level.ground);
+ground.meta.physics.gravity = null;
 ground.color("green");
-ground.stretch = false;
 
 // Start updating screen
 setInterval(update, FRAMETIME)
