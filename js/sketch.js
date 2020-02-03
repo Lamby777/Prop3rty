@@ -4,11 +4,12 @@
 ///////////////////////////////////////////
 
 // Constants
-const DEV = true; // Shows stats 4 nerds
-const SHOW_FPS = true;
-const MAX_FPS = 1;
-const FRAMETIME = Math.floor(1000/MAX_FPS);
-const DEFAULT_RESOLUTION = [1366, 768]; // School Chromebook
+const DEV = true, // Shows stats 4 nerds
+	SHOW_FPS = true,
+	MAX_FPS = 60,
+	FRAMETIME = Math.floor(1000/MAX_FPS),
+	FRAMECOUNT_INTERVAL = 5 // Frames to wait to draw count
+	DEFAULT_RESOLUTION = [1366, 768]; // Cbook
 
 // Initialize Variables
 let lastFramecount, fps,
@@ -37,30 +38,19 @@ window.onload = window.onresize = function() {
 	sy = cy/DEFAULT_RESOLUTION[1];
 }
 
-class Prop {
-	constructor(x=0, y=0, w=16, h=16, yv=0, xv=0) {
+class BasicProp {
+	constructor(x=0, y=0, w=16, h=16) {
 		this.x = x, this.y = y,
 		this.w = w, this.h = h,
-		this.xv = xv, this.yv = yv,
 		this.img = null,
 		this.sheet = null,
 		this.col = "white",
-		this.meta = {
-			physics: {
-				gravity: "default",
-			},
-			enabled: false,
-			flipped: false,
-			screenWrap: false,
-			borderBypass: false,
-		},
 		this.stretch = true;
 		this.border = {
 			active: false,
 			size: 4,
 			col: "red",
 		};
-		props.push(this);
 	}
 
 	touching(rect) {
@@ -92,11 +82,59 @@ class Prop {
 			this.frames = this.img % fw;
 		}
 	}
-	
+
+	update() {
+		let sw = this.w, sh = this.h;
+		if (this.sheet) this.animate();
+		if (this.stretch) sw *= sx, sh *= sy;
+		if (this.sheet) {
+			c.drawImage(this.img,
+				(this.frame * (this.img.width/this.frames)),
+				0, (this.img.width / this.frames),
+				this.img.height,
+				this.x, this.y,
+				this.sw, this.sh);
+		} else if (this.img) {
+			c.drawImage(this.img,
+			this.x, this.y,
+			this.sw, this.sh);
+		} else {
+			c.fillStyle = this.col;
+			if (this.border.active) {
+				c.strokeSize = this.border.size;
+				c.strokeStyle = this.border.col;
+			}
+			c.strokeRect(this.x, this.y, this.sw, this.sh);
+			c.stroke();
+		}
+	}
+
+	animate() {
+		// Function for choosing frames.
+		// Customize it to whatever you need.
+	}
+}
+
+class Prop extends BasicProp {
+	constructor(x=0, y=0, w=16, h=16) {
+		super(x, y, w, h);
+		this.xv = 0, this.yv = 0,
+		this.meta = {
+			physics: {
+				gravity: "default",
+			},
+			enabled: false,
+			flipped: false,
+			screenWrap: false,
+			borderBypass: false,
+		};
+		props.push(this);
+	}
+
 	prepareUpdate() {
 		if (this.meta.physics.gravity) {
 			if (this.meta.physics.gravity === "default")
-			this.y += gravity - yv
+			this.y += level.gravity - this.yv
 			else this.y += this.physics.gravity;
 		}
 		if (this.sheet) this.animate();
@@ -121,6 +159,7 @@ class Prop {
 
 	update() {
 		let sw = this.w, sh = this.h;
+		this.prepareUpdate();
 		if (this.stretch) sw *= sx, sh *= sy;
 		if (this.sheet) {
 			c.drawImage(this.img,
@@ -139,7 +178,8 @@ class Prop {
 				c.strokeSize = this.border.size;
 				c.strokeStyle = this.border.col;
 			}
-			c.fillRect(this.x, this.y, this.sw, this.sh);
+			c.strokeRect(this.x, this.y, this.sw, this.sh);
+			c.stroke();
 		}
 	}
 
@@ -149,23 +189,33 @@ class Prop {
 	}
 }
 
-class levelPart extends Prop {
-	constructor(x=0, y=0, w=16, h=16) {
-		super(x, y, w, h);
-		this.meta.physics.gravity = 0;
-	}
-}
-
 class debugPart extends Prop {
 	constructor(x=0, y=0, w=16, h=16) {
 		super(x, y, w, h);
+		setInterval(() => {
+			alert(this.x)
+		}, 10000);
 	}
 }
 
+class Text {}
+
+let fpsdraw = 0;
 function update() {
 	c.clearRect(0,0,cx,cy);
 	redrawProps();
-	if (SHOW_FPS) redrawFramecount();
+	if (SHOW_FPS) {
+		fpsdraw--;
+		if (fpsdraw <= 0) {
+			fps = redrawFramecount();
+			fpsdraw = FRAMECOUNT_INTERVAL-1;
+		}
+		c.strokeStyle = "white";
+		c.fillStyle = "black";
+		c.strokeSize = 4;
+		c.strokeText(fps.toString(), 0.8*cx, 0.8*cy);
+		c.stroke();
+	}
 }
 
 function redrawProps() {
@@ -175,25 +225,23 @@ function redrawProps() {
 }
 
 function redrawFramecount() {
-	if(!lastFramecount) {
+	if (lastFramecount === undefined) {
 		lastFramecount = performance.now();
-		fps = 0;
-		return;
+		return 0;
 	}
-	let delta = (performance.now() - lastFramecount)/1000;
-	lastFramecount = performance.now();
-	fps = 1/delta;
-	c.strokeStyle = "white";
-	c.fillStyle = "black";
-	c.strokeSize = 4;
-	c.fillText(fps.toString(), 0.8*cx, 0.8*cy);
+	let pnow = performance.now();
+	let delta = (pnow - lastFramecount)/(FRAMECOUNT_INTERVAL * 1000);
+	lastFramecount = pnow;
+	return Math.round(1/delta);
 }
 
 // GAME CODE
 // Ground is an immovable prop
 //let ground = new levelPart(0, cy*level.ground, cx, cy*level.ground);
-let ground = new levelPart(0, 0, cx, cy);
-ground.color("green");
+//let ground = new levelPart(0, 0, cx, cy);
+//ground.color("green");
+let bruh = new Prop(0, 0, 16, 16);
+bruh.stretch = true;
 
 // Start updating screen
-setInterval(update, FRAMETIME)
+setInterval(update, FRAMETIME);
