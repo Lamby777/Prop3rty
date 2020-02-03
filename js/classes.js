@@ -7,7 +7,6 @@ class BasicProp {
 		this.img = null,
 		this.sheet = null,
 		this.col = "white",
-		this.stretch = true;
 		this.border = {
 			active: false,
 			size: 4,
@@ -48,7 +47,6 @@ class BasicProp {
 	update() {
 		let sw = this.w, sh = this.h;
 		if (this.sheet) this.animate();
-		if (this.stretch) sw *= sx, sh *= sy;
 		if (this.sheet) {
 			c.drawImage(this.img,
 				(this.frame * (this.img.width/this.frames)),
@@ -122,7 +120,6 @@ class Prop extends BasicProp {
 	update() {
 		let sw = this.w, sh = this.h;
 		this.prepareUpdate();
-		if (this.stretch) sw *= sx, sh *= sy;
 		if (this.sheet) {
 			c.drawImage(this.img,
 				(this.frame * (this.img.width/this.frames)),
