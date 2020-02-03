@@ -45,26 +45,24 @@ class BasicProp {
 	}
 
 	update() {
-		let sw = this.w, sh = this.h;
 		if (this.sheet) this.animate();
 		if (this.sheet) {
 			c.drawImage(this.img,
 				(this.frame * (this.img.width/this.frames)),
 				0, (this.img.width / this.frames),
 				this.img.height,
-				this.x, this.y,
-				this.sw, this.sh);
+				this.x, this.y);
 		} else if (this.img) {
 			c.drawImage(this.img,
 			this.x, this.y,
-			this.sw, this.sh);
+			this.w, this.h);
 		} else {
 			c.fillStyle = this.col;
 			if (this.border.active) {
 				c.strokeSize = this.border.size;
 				c.strokeStyle = this.border.col;
 			}
-			c.strokeRect(this.x, this.y, this.sw, this.sh);
+			c.strokeRect(this.x, this.y, this.w, this.h);
 			c.stroke();
 		}
 	}
@@ -118,7 +116,6 @@ class Prop extends BasicProp {
 	}
 
 	update() {
-		let sw = this.w, sh = this.h;
 		this.prepareUpdate();
 		if (this.sheet) {
 			c.drawImage(this.img,
@@ -126,18 +123,18 @@ class Prop extends BasicProp {
 				0, (this.img.width / this.frames),
 				this.img.height,
 				this.x, this.y,
-				this.sw, this.sh);
+				this.w, this.h);
 		} else if (this.img) {
 			c.drawImage(this.img,
 			this.x, this.y,
-			this.sw, this.sh);
+			this.w, this.h);
 		} else {
 			c.fillStyle = this.col;
 			if (this.border.active) {
 				c.strokeSize = this.border.size;
 				c.strokeStyle = this.border.col;
 			}
-			c.strokeRect(this.x, this.y, this.sw, this.sh);
+			c.strokeRect(this.x, this.y, this.w, this.h);
 			c.stroke();
 		}
 	}
