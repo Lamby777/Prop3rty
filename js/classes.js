@@ -4,6 +4,7 @@ class BasicProp {
 	constructor(x=0, y=0, w=16, h=16) {
 		this.x = x, this.y = y,
 		this.w = w, this.h = h,
+		this.terminalVelocity = 20,
 		this.img = null,
 		this.sheet = null,
 		this.col = "white",
@@ -94,6 +95,8 @@ class Prop extends BasicProp {
 			//
 			if (this.meta.physics.gravity === "default") {
 				this.yv -= level.gravity;
+				if (Math.abs(this.yv>this.terminalVelocity))
+					this.yv = (this.yv < 0) ? -this.terminalVelocity : this.terminalVelocity;
 			} else {
 				//this.y += 0;
 			}
