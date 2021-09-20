@@ -12,8 +12,9 @@ let lastFramecount, fps,
 	level = {
 		ground: 20/100, // ground percentage of screen
 		friction: 0.8,
+		airFriction: 0.05,
 		accel: 1.9,
-		gravity: 1,
+		gravity: 0.1,
 		maxfall: 10,
 	};
 
@@ -73,7 +74,9 @@ function redrawFramecount() {
 //let ground = new levelPart(0, 0, cx, cy);
 //ground.color("green");
 let bruh = new Prop(0, 0, 16, 16);
+bruh.meta.physics.gravity = "default";
 bruh.stretch = true;
+bruh.yv = 0;
 
 // Start updating screen
 setInterval(update, FRAMETIME);

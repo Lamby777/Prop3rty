@@ -91,13 +91,20 @@ class Prop extends BasicProp {
 
 	prepareUpdate() {
 		if (this.meta.physics.gravity) {
-			if (this.meta.physics.gravity === "default")
-			this.y += level.gravity - this.yv
-			else this.y += this.physics.gravity;
+			//
+			if (this.meta.physics.gravity === "default") {
+				this.yv -= level.gravity;
+			} else {
+				//this.y += 0;
+			}
 		}
 		if (this.sheet) this.animate();
+		
+		// Apply velocities
 		this.x += this.xv;
 		this.y -= this.yv;
+
+		// Border bypass and screen wrapping
 		if (!this.meta.borderBypass) {
 			if (this.x + this.w > cx) {
 				this.x = cx - this.w;
