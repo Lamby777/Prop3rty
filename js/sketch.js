@@ -1,7 +1,7 @@
-///////////////////////////////////////////
-//        Prop 3 by DexieTheSheep        //
-//   https://github.com/Lamby777/Prop    //
-///////////////////////////////////////////
+////////////////////////////////////////////
+//        Prop 3 by DexieTheSheep         //
+//  https://github.com/Lamby777/Prop3rty  //
+////////////////////////////////////////////
 
 // Constants
 
@@ -67,16 +67,6 @@ function redrawFramecount() {
 	lastFramecount = pnow;
 	return Math.round(1/delta);
 }
-
-// GAME CODE
-// Ground is an immovable prop
-//let ground = new levelPart(0, cy*level.ground, cx, cy*level.ground);
-//let ground = new levelPart(0, 0, cx, cy);
-//ground.color("green");
-let bruh = new Prop(0, 0, 16, 16);
-bruh.meta.physics.gravity = "default";
-bruh.stretch = true;
-bruh.yv = 0;
 
 // Start updating screen
 setInterval(update, FRAMETIME);
