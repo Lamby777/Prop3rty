@@ -6,7 +6,8 @@
 // Constants
 
 // Initialize Variables
-let lastFramecount, fps,
+
+var lastFramecount, fps,
 	cx, cy, sx, sy, // Canvas w/h and stretching
 	props = [],
 	level = {
