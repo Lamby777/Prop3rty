@@ -68,5 +68,8 @@ function redrawFramecount() {
 	return Math.round(1/delta);
 }
 
-// Start updating screen
-setInterval(update, FRAMETIME);
+import("/js/test.js").then(() => {
+
+	// Start updating screen
+	setInterval(update, FRAMETIME);
+});
