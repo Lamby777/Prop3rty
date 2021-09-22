@@ -8,9 +8,8 @@ class BasicProp {
 		this.sheet = null,
 		this.col = "white",
 		this.border = {
-			active: false,
 			size: 4,
-			col: "red",
+			col: "white",
 		};
 	}
 
@@ -35,6 +34,10 @@ class BasicProp {
 		this.sheet = null;
 		this.col = src;
 	}
+
+	setBorder(width, col) {
+		Object.assign(this.border, {col: col, size: width});
+	}
 	
 	sprite(src, fw=16) {
 		if (!src) this.color();
@@ -46,6 +49,7 @@ class BasicProp {
 	}
 
 	update() {
+		//let {}///////////////////////////////////////////////
 		if (this.sheet) this.animate();
 		if (this.sheet) {
 			c.drawImage(this.img,
@@ -58,14 +62,17 @@ class BasicProp {
 			this.x, this.y,
 			this.w, this.h);
 		} else {
-			if (this.border.active) {
-				c.strokeSize = this.border.size;
+			c.beginPath();
+			if (this.border.size > 0) {
+				c.lineWidth = this.border.size;
 				c.strokeStyle = this.border.col;
-				c.strokeRect(this.x, this.y, this.w, this.h);
+				//c.strokeRect(this.x, this.y, this.w, this.h);
 			}
 			c.fillStyle = "red"; //this.col;
-			c.fillRect(this.x, this.y, this.w, this.h);
-			//c.fill();
+			c.rect(this.x, this.y, this.w, this.h);
+			c.closePath()
+			c.stroke();
+			c.fill();
 		}
 	}
 
@@ -80,6 +87,13 @@ class BasicProp {
 			this.w, this.h);
 	}
 }
+
+
+
+
+
+
+
 
 class Prop extends BasicProp {
 	constructor(x=0, y=0, w=16, h=16) {

@@ -5,8 +5,9 @@ var bruh = new Prop(64, 0, 16, 16);
 bruh.stretch = true;
 bruh.yv = 0;
 bruh.color("red");
+bruh.setBorder(4, "white");
 
-var ground = new Prop(0, cy*(level.ground), cx, cy);
+var ground = new Prop(0, "cHeight", "cWidth", 100);
 ground.meta.physics.gravity = null;
 ground.stretch = true;
 ground.color("green");

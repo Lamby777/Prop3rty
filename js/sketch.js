@@ -19,6 +19,10 @@ var lastFramecount, fps,
 		maxfall: 10,
 	};
 
+const injectParameters = {
+	//
+}
+
 // Canvas
 let canvas = document.getElementById("prop-canvas");
 const c = canvas.getContext("2d");
@@ -46,9 +50,8 @@ function update() {
 		}
 		c.strokeStyle = "white";
 		c.fillStyle = "black";
-		c.strokeSize = 4;
+		c.lineWidth = 1;
 		c.strokeText(fps.toString(), 0.8*cx, 0.8*cy);
-		c.stroke();
 	}
 }
 
