@@ -97,8 +97,13 @@ class Prop extends BasicProp {
 				this.yv -= level.gravity;
 				if (Math.abs(this.yv>this.terminalVelocity))
 					this.yv = (this.yv < 0) ? -this.terminalVelocity : this.terminalVelocity;
-			} else {
-				//this.y += 0;
+			} else if (this.meta.physics.gravity === "custom") {
+				// Custom gravity
+			}
+
+			// Collision detection
+			if (/**/) {
+				//
 			}
 		}
 		if (this.sheet) this.animate();
