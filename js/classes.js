@@ -4,7 +4,6 @@ class BasicProp {
 	constructor(x=0, y=0, w=16, h=16) {
 		this.x = x, this.y = y,
 		this.w = w, this.h = h,
-		this.terminalVelocity = 20,
 		this.img = null,
 		this.sheet = null,
 		this.col = "white",
@@ -30,7 +29,8 @@ class BasicProp {
 		}
 	}
 
-	color(src="white") {
+	color(src) {
+		if (!src) src = "white";
 		this.img = null;
 		this.sheet = null;
 		this.col = src;
@@ -58,19 +58,26 @@ class BasicProp {
 			this.x, this.y,
 			this.w, this.h);
 		} else {
-			c.fillStyle = this.col;
 			if (this.border.active) {
 				c.strokeSize = this.border.size;
 				c.strokeStyle = this.border.col;
+				c.strokeRect(this.x, this.y, this.w, this.h);
 			}
-			c.strokeRect(this.x, this.y, this.w, this.h);
-			c.stroke();
+			c.fillStyle = "red"; //this.col;
+			c.fillRect(this.x, this.y, this.w, this.h);
+			//c.fill();
 		}
 	}
 
 	animate() {
 		// Function for choosing frames.
 		// Customize it to whatever you need.
+		c.drawImage(this.img,
+			(this.frame * (this.img.width/this.frames)),
+			0, (this.img.width / this.frames),
+			this.img.height,
+			this.x, this.y,
+			this.w, this.h);
 	}
 }
 
@@ -78,6 +85,8 @@ class Prop extends BasicProp {
 	constructor(x=0, y=0, w=16, h=16) {
 		super(x, y, w, h);
 		this.xv = 0, this.yv = 0,
+		this.terminalVelocity = 20,
+		this.collisionLayers = [],
 		this.meta = {
 			physics: {
 				gravity: "default",
@@ -92,7 +101,7 @@ class Prop extends BasicProp {
 
 	prepareUpdate() {
 		if (this.meta.physics.gravity) {
-			//
+			// Gravity
 			if (this.meta.physics.gravity === "default") {
 				this.yv -= level.gravity;
 				if (Math.abs(this.yv>this.terminalVelocity))
@@ -102,7 +111,7 @@ class Prop extends BasicProp {
 			}
 
 			// Collision detection
-			if (/**/) {
+			if (this.collisionLayers.length > 0) {
 				//
 			}
 		}
@@ -132,26 +141,7 @@ class Prop extends BasicProp {
 
 	update() {
 		this.prepareUpdate();
-		if (this.sheet) {
-			c.drawImage(this.img,
-				(this.frame * (this.img.width/this.frames)),
-				0, (this.img.width / this.frames),
-				this.img.height,
-				this.x, this.y,
-				this.w, this.h);
-		} else if (this.img) {
-			c.drawImage(this.img,
-			this.x, this.y,
-			this.w, this.h);
-		} else {
-			c.fillStyle = this.col;
-			if (this.border.active) {
-				c.strokeSize = this.border.size;
-				c.strokeStyle = this.border.col;
-			}
-			c.strokeRect(this.x, this.y, this.w, this.h);
-			c.stroke();
-		}
+		super.update();
 	}
 
 	animate() {

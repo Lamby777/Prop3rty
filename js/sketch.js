@@ -54,7 +54,7 @@ function update() {
 
 function redrawProps() {
 	for (prop of props) {
-		prop.update();
+		prop.update?.();
 	}
 }
 
