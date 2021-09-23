@@ -11,6 +11,12 @@ class BasicProp {
 			size: extra?.border?.size ?? 4,
 			col: extra?.border?.col ?? "white",
 		};
+
+		this.meta = {
+			flipped: false,
+			screenWrap: false,
+			borderBypass: false,
+		};
 	}
 
 	touching(rect) {
@@ -102,16 +108,12 @@ class Prop extends BasicProp {
 		this.xv = extra?.xv ?? 0,
 		this.yv = extra?.yv ?? 0,
 		this.terminalVelocity = extra?.terminalVelocity ?? 20,
-		this.collisionLayers = extra?.collisionLayers ?? [],
-		this.meta = {
+		this.collisionLayers = extra?.collisionLayers ?? [];
+		Object.assign(this.meta, {
 			physics: {
 				gravity: "default",
 			},
-			enabled: false,
-			flipped: false,
-			screenWrap: false,
-			borderBypass: false,
-		};
+		});
 		props.push(this);
 	}
 
