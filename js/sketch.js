@@ -18,7 +18,7 @@ var lastFramecount, fps,
 		gravity: 0.1,
 	};
 
-// Dynamic Values, used for passing special properties
+// Dynamic Values, common arrow functions for prop parameters
 const dv = {
 	cx: () => cx,
 	cy: () => cy,
