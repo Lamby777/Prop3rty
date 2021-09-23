@@ -16,7 +16,6 @@ var lastFramecount, fps,
 		airFriction: 0.05,
 		accel: 1.9,
 		gravity: 0.1,
-		maxfall: 10,
 	};
 
 // Dynamic Values, used for passing special properties
