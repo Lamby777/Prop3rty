@@ -43,6 +43,8 @@ let fpsdraw = 0;
 function update() {
 	c.clearRect(0,0,cx,cy);
 	redrawProps();
+
+	// Redraw FPS counter
 	if (SHOW_FPS) {
 		fpsdraw--;
 		if (fpsdraw <= 0) {

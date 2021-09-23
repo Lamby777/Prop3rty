@@ -21,10 +21,16 @@ class BasicProp {
 	}
 
 	touching(rect) {
-		return !(rect.x > (this.x + this.w) ||
-				(rect.x + rect.w) < this.x ||
-				rect.y > (this.y + this.h) ||
-				(rect.y + rect.h) < this.y);
+		let [x, y, w, h] = prepareDynput(
+			this.x, this.y,
+			this.w, this.h);
+		let [rx, ry, rw, rh] = prepareDynput(
+			rect.x, rect.y,
+			rect.w, rect.h);
+		return !(rx > (x + w) ||
+				(rx + rw) < x ||
+				ry > (y + h) ||
+				(ry + rh) < y);
 	}
 
 	image(src) {
@@ -171,4 +177,20 @@ class Text extends BasicProp {
 function prepareDynput(...args) {
 	return args.map(x =>
 		((x instanceof Function) ? x() : x));
+}
+
+// Pass Keyboard Input
+let keyActions = {
+	//
+};
+
+document.addEventListener("keydown", (e)=>{
+	let key = e.key;
+	if (key in keyActions) {
+		keyActions[key](key);
+	}
+});
+
+function bindKey(key, action) {
+	//
 }

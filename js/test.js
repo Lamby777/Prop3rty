@@ -1,13 +1,13 @@
 // GAME CODE
 // Ground is an immovable prop
 
-var bruh = new Prop(64, 0, 16, 16, {
+var bruh = new Prop(64, 0, 32, 32, {
 	border: {size: 4},
 	name: "Bruh Cube",
 });
 bruh.color("red");
 
-var ground = new Prop(()=>50, 50, 20, 20, {
+var ground = new Prop(/*()=>*/50, 400, 500, 400, {
 	border: {size: 4},
 	name: "Grass",
 });
