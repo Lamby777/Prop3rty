@@ -74,7 +74,6 @@ function redrawFramecount() {
 }
 
 import("/js/test.js").then(() => {
-
 	// Start updating screen
 	setInterval(update, FRAMETIME);
 });
