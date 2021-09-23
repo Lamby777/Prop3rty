@@ -68,7 +68,7 @@ class BasicProp {
 				c.strokeStyle = this.border.col;
 				//c.strokeRect(this.x, this.y, this.w, this.h);
 			}
-			c.fillStyle = "red"; //this.col;
+			c.fillStyle = this.col;
 			c.rect(this.x, this.y, this.w, this.h);
 			c.closePath()
 			c.stroke();
