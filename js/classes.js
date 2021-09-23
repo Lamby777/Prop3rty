@@ -49,18 +49,19 @@ class BasicProp {
 	}
 
 	update() {
-		//let {}///////////////////////////////////////////////
+		let [x, y, w, h] = prepareDynput(
+			this.x, this.y,
+			this.w, this.h);
 		if (this.sheet) this.animate();
 		if (this.sheet) {
 			c.drawImage(this.img,
 				(this.frame * (this.img.width/this.frames)),
 				0, (this.img.width / this.frames),
 				this.img.height,
-				this.x, this.y);
+				x, y);
 		} else if (this.img) {
 			c.drawImage(this.img,
-			this.x, this.y,
-			this.w, this.h);
+			x, y, w, h);
 		} else {
 			c.beginPath();
 			if (this.border.size > 0) {
@@ -69,8 +70,8 @@ class BasicProp {
 				//c.strokeRect(this.x, this.y, this.w, this.h);
 			}
 			c.fillStyle = this.col;
-			c.rect(this.x, this.y, this.w, this.h);
-			c.closePath()
+			c.rect(x, y, w, h);
+			c.closePath();
 			c.stroke();
 			c.fill();
 		}
