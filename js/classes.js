@@ -159,11 +159,6 @@ class Prop extends BasicProp {
 		this.prepareUpdate();
 		super.update();
 	}
-
-	animate() {
-		// Function for choosing frames.
-		// Customize it to whatever you need.
-	}
 }
 
 class Text extends BasicProp {
