@@ -113,9 +113,10 @@ document.addEventListener("keydown", (e)=>{
 // Type is the type of key input ("up" "down" or "while")
 // Action is the function to run
 function bindKey(key, type, action) {
-	if (["while", "down", "up"].includes(type)) {
-		//
-	} else throw TypeError('Prop3 bindKey argument #2 requires "while," "down," or "up."');
+	if (["while", "down", "up"].includes(type))
+		window[type + "KeyActions"][key] = action;
+	else throw TypeError(
+		'Prop3 bindKey argument #2 requires "while," "down," or "up."');
 }
 
 import("/js/test.js").then(() => {
