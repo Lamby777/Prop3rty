@@ -85,20 +85,37 @@ function getPropsByName(name) {
 	return props.filter((x)=>{x?.name === name});
 }
 
-// Pass Keyboard Input
-let keyActions = {
+
+
+// Pass Keyboard Input to Game
+
+const currentKeys = [];
+
+let whileKeyActions = {
+	//
+};
+
+let upKeyActions = {
+	//
+};
+
+let downKeyActions = {
 	//
 };
 
 document.addEventListener("keydown", (e)=>{
 	let key = e.key;
-	if (key in keyActions) {
-		keyActions[key](key);
+	if (key in keyDownActions) {
+		keyDownActions[key](key);
 	}
 });
 
-function bindKey(key, action) {
-	//
+// Type is the type of key input ("up" "down" or "while")
+// Action is the function to run
+function bindKey(key, type, action) {
+	if (["while", "down", "up"].includes(type)) {
+		//
+	} else throw TypeError('Prop3 bindKey argument #2 requires "while," "down," or "up."');
 }
 
 import("/js/test.js").then(() => {
