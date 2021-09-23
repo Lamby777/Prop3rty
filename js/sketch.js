@@ -75,6 +75,32 @@ function redrawFramecount() {
 	return Math.round(1/delta);
 }
 
+function getPropsByType(type) {
+	return props.filter((x)=>{x?.type.includes?.(type)});
+}
+
+// Like "getElementById" for props.
+// Duplicate names on props is discouraged, use "type" for that.
+function getPropsByName(name) {
+	return props.filter((x)=>{x?.name === name});
+}
+
+// Pass Keyboard Input
+let keyActions = {
+	//
+};
+
+document.addEventListener("keydown", (e)=>{
+	let key = e.key;
+	if (key in keyActions) {
+		keyActions[key](key);
+	}
+});
+
+function bindKey(key, action) {
+	//
+}
+
 import("/js/test.js").then(() => {
 	// Start updating screen
 	setInterval(update, FRAMETIME);

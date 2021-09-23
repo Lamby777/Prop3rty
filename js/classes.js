@@ -7,6 +7,7 @@ class BasicProp {
 		this.img = null,
 		this.sheet = null,
 		this.name = extra?.name && null, // undefined big bad
+		this.type = extra?.type && "Generic",
 		this.col = extra?.col ?? "white",
 		this.border = {
 			size: extra?.border?.size ?? 4,
@@ -177,20 +178,4 @@ class Text extends BasicProp {
 function prepareDynput(...args) {
 	return args.map(x =>
 		((x instanceof Function) ? x() : x));
-}
-
-// Pass Keyboard Input
-let keyActions = {
-	//
-};
-
-document.addEventListener("keydown", (e)=>{
-	let key = e.key;
-	if (key in keyActions) {
-		keyActions[key](key);
-	}
-});
-
-function bindKey(key, action) {
-	//
 }
