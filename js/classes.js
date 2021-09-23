@@ -1,15 +1,15 @@
 // Prop Classes
 
 class BasicProp {
-	constructor(x=0, y=0, w=16, h=16) {
+	constructor(x=0, y=0, w=16, h=16, extra) {
 		this.x = x, this.y = y,
 		this.w = w, this.h = h,
 		this.img = null,
 		this.sheet = null,
-		this.col = "white",
+		this.col = extra?.col ?? "white",
 		this.border = {
-			size: 4,
-			col: "white",
+			size: extra?.border?.size ?? 4,
+			col: extra?.border?.col ?? "white",
 		};
 	}
 
@@ -96,11 +96,12 @@ class BasicProp {
 
 
 class Prop extends BasicProp {
-	constructor(x=0, y=0, w=16, h=16) {
+	constructor(x=0, y=0, w=16, h=16, extra) {
 		super(x, y, w, h);
-		this.xv = 0, this.yv = 0,
-		this.terminalVelocity = 20,
-		this.collisionLayers = [],
+		this.xv = extra?.xv ?? 0,
+		this.yv = extra?.yv ?? 0,
+		this.terminalVelocity = extra?.terminalVelocity ?? 20,
+		this.collisionLayers = extra?.collisionLayers ?? [],
 		this.meta = {
 			physics: {
 				gravity: "default",
