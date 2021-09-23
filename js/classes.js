@@ -166,15 +166,6 @@ class Prop extends BasicProp {
 	}
 }
 
-class debugPart extends Prop {
-	constructor(x=0, y=0, w=16, h=16) {
-		super(x, y, w, h);
-		setInterval(() => {
-			alert(this.x)
-		}, 10000);
-	}
-}
-
 class Text extends BasicProp {
 	//
 }
