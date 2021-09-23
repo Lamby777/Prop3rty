@@ -19,8 +19,10 @@ var lastFramecount, fps,
 		maxfall: 10,
 	};
 
-const injectParameters = {
-	//
+// Dynamic Values, used for passing special properties
+const dv = {
+	cx: () => cx,
+	cy: () => cy,
 }
 
 // Canvas

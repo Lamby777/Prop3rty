@@ -176,3 +176,7 @@ class debugPart extends Prop {
 class Text extends BasicProp {
 	//
 }
+
+function prepareDynput(...args) {
+	return args.map(x => ((x instanceof Function) ? x() : x));
+}
