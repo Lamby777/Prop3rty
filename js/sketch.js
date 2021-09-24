@@ -91,10 +91,10 @@ function getPropsByName(name) {
 
 var currentKeys = [];
 
-var beforeKeyActions = {},
-	afterKeyActions = {},
-	upKeyActions = {},
-	downKeyActions = {};
+var beforeKeyActions = {}, // Before physics
+	afterKeyActions = {}, // Before update (After physics)
+	upKeyActions = {}, // On key released
+	downKeyActions = {}; // On key pressed (Fire once)
 
 document.addEventListener("keydown", (e)=>{
 	let key = e.code;
