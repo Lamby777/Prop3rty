@@ -1,3 +1,5 @@
+"use strict";
+
 // Shows stats 4 nerds
 const DEV = true,
 	// FPS counter
@@ -8,7 +10,7 @@ const DEV = true,
 	FRAMETIME = Math.floor(1000/MAX_FPS),
 	// Frames per counter draw.
 	// Must have SHOW_FPS set to true.
-	FRAMECOUNT_INTERVAL = 5
+	FRAMECOUNT_INTERVAL = 5,
 	// Resolution to play normally at.
 	// Any other res will have some form of stretching.
 	DEFAULT_RESOLUTION = [1366, 768];

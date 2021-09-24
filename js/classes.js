@@ -1,3 +1,5 @@
+"use strict";
+
 // Prop Classes
 
 class BasicProp {

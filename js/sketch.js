@@ -1,3 +1,5 @@
+"use strict";
+
 ////////////////////////////////////////////
 //        Prop 3 by DexieTheSheep         //
 //  https://github.com/Lamby777/Prop3rty  //
@@ -59,7 +61,7 @@ function update() {
 }
 
 function redrawProps() {
-	for (prop of props) {
+	for (let prop of props) {
 		prop.update?.();
 	}
 }

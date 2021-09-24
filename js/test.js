@@ -1,3 +1,5 @@
+"use strict";
+
 // GAME CODE
 // Ground is an immovable prop
 
