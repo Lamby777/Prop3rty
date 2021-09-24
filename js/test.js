@@ -16,10 +16,10 @@ var ground = new Prop(/*()=>*/50, 400, 500, 400, {
 ground.meta.physics.gravity = null;
 ground.color("green");
 
-bindKey("KeyW", "down", ()=>{
+bindKey("KeyW", "up", ()=>{
 	bruh.yv = 5;
 });
 
-bindKey("KeyD", "before", ()=>{
+bindKey("KeyD", "after", ()=>{
 	bruh.xv = 1;
 });

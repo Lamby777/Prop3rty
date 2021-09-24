@@ -22,10 +22,9 @@ class BasicProp {
 	}
 
 	touching(rect) {
-		let [x, y, w, h] = prepareDynput(
+		let [x, y, w, h, rx, ry, rw, rh] = prepareDynput(
 			this.x, this.y,
-			this.w, this.h);
-		let [rx, ry, rw, rh] = prepareDynput(
+			this.w, this.h,
 			rect.x, rect.y,
 			rect.w, rect.h);
 		return !(rx > (x + w) ||
@@ -89,6 +88,8 @@ class BasicProp {
 			c.stroke();
 			c.fill();
 		}
+
+		this.afterKeys();
 	}
 
 	animate() {
@@ -101,8 +102,20 @@ class BasicProp {
 			this.x, this.y,
 			this.w, this.h);
 	}
-
-	checkWhileKeys();
+	
+	afterKeys() {
+		/*let i;
+		for () {
+			let key = afterKeyActions[i];
+			if (key) console.log(key);/*
+			if (currentKeys.includes(key)) return;
+			currentKeys.push(key);
+			console.log(currentKeys);
+			if (downKeyActions[key]) {
+				downKeyActions[key].forEach((f)=>{f()});
+			}
+		}*/
+	}
 }
 
 

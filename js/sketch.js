@@ -91,36 +91,25 @@ function getPropsByName(name) {
 
 var currentKeys = [];
 
-var beforeKeyActions = {
-	//
-};
-
-var afterKeyActions = {
-	//
-};
-
-var upKeyActions = {
-	//
-};
-
-var downKeyActions = {
-	//
-};
+var beforeKeyActions = {},
+	afterKeyActions = {},
+	upKeyActions = {},
+	downKeyActions = {};
 
 document.addEventListener("keydown", (e)=>{
 	let key = e.code;
 	if (currentKeys.includes(key)) return;
-	currentKeys.push(key);
-	console.log(currentKeys);
-	if (downKeyActions[key]) {
-		downKeyActions[key].forEach((f)=>{f()});
+	else {
+		currentKeys.push(key);
+		if (downKeyActions[key]) {
+			downKeyActions[key].forEach((f)=>{f()});
+		}
 	}
 });
 
 document.addEventListener("keyup", (e)=>{
 	let key = e.code;
 	currentKeys = currentKeys.filter((val) => val !== key);
-	console.log(currentKeys);
 	if (upKeyActions[key]) {
 		upKeyActions[key].forEach((f)=>{f()});
 	}
