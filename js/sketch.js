@@ -89,38 +89,52 @@ function getPropsByName(name) {
 
 // Pass Keyboard Input to Game
 
-const currentKeys = [];
+var currentKeys = [];
 
-let whileKeyActions = {
+var beforeKeyActions = {
 	//
 };
 
-let upKeyActions = {
+var afterKeyActions = {
 	//
 };
 
-let downKeyActions = {
+var upKeyActions = {
+	//
+};
+
+var downKeyActions = {
 	//
 };
 
 document.addEventListener("keydown", (e)=>{
-	let key = e.key;
-	if (key in keyDownActions) {
-		keyDownActions[key](key);
+	let key = e.code;
+	if (currentKeys.includes(key)) return;
+	currentKeys.push(key);
+	console.log(currentKeys);
+	if (downKeyActions[key]) {
+		downKeyActions[key].forEach((f)=>{f()});
 	}
 });
 
-// Type is the type of key input ("up" "down" or "while")
+document.addEventListener("keyup", (e)=>{
+	let key = e.code;
+	currentKeys = currentKeys.filter((val) => val !== key);
+	console.log(currentKeys);
+	if (upKeyActions[key]) {
+		upKeyActions[key].forEach((f)=>{f()});
+	}
+});
+
+// Type is the type of key input ("up" "down" or a while)
 // Action is the function to run
 function bindKey(key, type, action) {
-	if (["while", "down", "up"].includes(type)) {
+	if (["before", "after", "down", "up"].includes(type)) {
 		let currentActionArray = window[type + "KeyActions"];
-		if (!currentActionArray[key].length?.()) currentActionArray[key] = [];
-		let arr = currentActionArray[key];
-		arr.append(action);
-		return arr.length-1;
-	}
-	else throw TypeError(
+		if (!currentActionArray[key]?.length) currentActionArray[key] = [];
+		currentActionArray[key].push(action);
+		//return currentActionArray[key].length-1;
+	} else throw TypeError(
 		'Prop3 bindKey argument #2 requires "while," "down," or "up."');
 }
 

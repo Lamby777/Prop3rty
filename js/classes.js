@@ -101,6 +101,8 @@ class BasicProp {
 			this.x, this.y,
 			this.w, this.h);
 	}
+
+	checkWhileKeys();
 }
 
 
