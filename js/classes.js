@@ -148,9 +148,12 @@ class Prop extends BasicProp {
 
 	prepareUpdate() {
 		this.beforeKeys();
-		if (this.meta.physics.gravity) {
-			// Gravity
-			if (this.meta.physics.gravity === "default") {
+		if (this.meta.physics.gravity) { // Apply gravity if exists
+			if (this.meta.physics.gravity instanceof Function) {
+				// Custom Gravity Function
+				this.meta.physics.gravity.call(this);
+			} else if (this.meta.physics.gravity === "default") {
+				// Default Gravity
 				this.yv -= level.gravity;
 				if (Math.abs(this.yv)>this.terminalVelocity)
 					this.yv = (this.yv < 0) ? -this.terminalVelocity : this.terminalVelocity;
@@ -159,8 +162,6 @@ class Prop extends BasicProp {
 				if (this.meta.physics?.drag) {
 					this.xv *= this.meta.physics.drag;
 				}
-			} else if (this.meta.physics.gravity === "custom") {
-				// Custom gravity
 			}
 
 			// Collision detection
