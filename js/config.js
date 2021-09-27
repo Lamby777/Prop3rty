@@ -5,7 +5,7 @@ const DEV = true,
 	// FPS counter
 	SHOW_FPS = true,
 	// Max FPS
-	MAX_FPS = 15,
+	MAX_FPS = 60,
 	// Time between frames, is done automatically
 	FRAMETIME = Math.floor(1000/MAX_FPS),
 	// Frames per counter draw.
