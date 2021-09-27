@@ -126,7 +126,7 @@ function bindKey(key, type, action) {
 		currentActionArray[key].push(action);
 		//return currentActionArray[key].length-1;
 	} else throw TypeError(
-		'Prop3 bindKey argument #2 requires "while," "down," or "up."');
+		'Prop3 bindKey argument #2 requires "before," "after," "down," or "up."');
 }
 
 import("/js/test.js").then(() => {
