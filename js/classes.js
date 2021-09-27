@@ -26,20 +26,16 @@ class BasicProp {
 	}
 
 	touching(rect, axes) {
-		let [rx, ry, rw, rh] = prepareDynput(
-			rect.x, rect.y,
-			rect.w, rect.h);
-		
 		if (axes)
-			return [((rx > (this.x + this.w) ||
-				(rx + rw) < this.x),
-				(ry > (this.y + this.h) ||
-				(ry + rh) < this.y))];
+			return [(rect.x > (this.x + this.w) ||
+				(rect.x + rect.w) < this.x),
+				(rect.y > (this.y + this.h) ||
+				(rect.y + rect.h) < this.y)];
 		else
-			return !(rx > (this.x + this.w) ||
-					(rx + rw) < this.x ||
-					ry > (this.y + this.h) ||
-					(ry + rh) < this.y);
+			return !(rect.x > (this.x + this.w) ||
+					(rect.x + rect.w) < this.x ||
+					rect.y > (this.y + this.h) ||
+					(rect.y + rect.h) < this.y);
 	}
 
 	image(src) {
@@ -141,6 +137,7 @@ class Prop extends BasicProp {
 				gravity: "default",
 				acceleration: 50,
 				drag: 0.96,
+				immovable: false,
 			},
 		});
 		props.push(this);
@@ -165,8 +162,19 @@ class Prop extends BasicProp {
 			}
 
 			// Collision detection
-			if (this.collisionLayers.length > 0) {
-				//
+			if (!this.meta.physics.immovable &&
+				this.collisionLayers.length > 0) {
+				let colProps = props.filter((prop)=>{
+					return prop.collisionLayers.some((val) =>
+						this.collisionLayers.includes(val));
+				});
+				for (let i of colProps) {
+					let res = this.touching(i, true);
+					if (res[1]) {
+						//console.log(i.name); // Returns undefined fsr
+						this.yv = 0;
+					}
+				}
 			}
 		}
 		if (this.sheet) this.animate();
