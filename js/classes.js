@@ -24,16 +24,23 @@ class BasicProp {
 		prepareDynPos.call(this);
 	}
 
-	touching(rect) {
+	touching(rect, axes) {
 		let [x, y, w, h, rx, ry, rw, rh] = prepareDynput(
 			this.x, this.y,
 			this.w, this.h,
 			rect.x, rect.y,
 			rect.w, rect.h);
-		return !(rx > (x + w) ||
-				(rx + rw) < x ||
-				ry > (y + h) ||
-				(ry + rh) < y);
+		
+		if (axes)
+			return [((rx > (x + w) ||
+				(rx + rw) < x),
+				(ry > (y + h) ||
+				(ry + rh) < y))];
+		else
+			return !(rx > (x + w) ||
+					(rx + rw) < x ||
+					ry > (y + h) ||
+					(ry + rh) < y);
 	}
 
 	image(src) {
