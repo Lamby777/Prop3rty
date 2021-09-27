@@ -12,6 +12,7 @@ class BasicProp {
 		this.name = extra?.name && null, // undefined big bad
 		this.type = extra?.type && "Generic",
 		this.col = extra?.col ?? "white",
+		this.drawLayer = extra?.drawLayer ?? 500,
 		this.border = {
 			size: extra?.border?.size ?? 4,
 			col: extra?.border?.col ?? "white",
@@ -21,26 +22,24 @@ class BasicProp {
 			flipped: false,
 		};
 		
-		prepareDynPos.call(this);
+		prepareDynStats.call(this);
 	}
 
 	touching(rect, axes) {
-		let [x, y, w, h, rx, ry, rw, rh] = prepareDynput(
-			this.x, this.y,
-			this.w, this.h,
+		let [rx, ry, rw, rh] = prepareDynput(
 			rect.x, rect.y,
 			rect.w, rect.h);
 		
 		if (axes)
-			return [((rx > (x + w) ||
-				(rx + rw) < x),
-				(ry > (y + h) ||
-				(ry + rh) < y))];
+			return [((rx > (this.x + this.w) ||
+				(rx + rw) < this.x),
+				(ry > (this.y + this.h) ||
+				(ry + rh) < this.y))];
 		else
-			return !(rx > (x + w) ||
-					(rx + rw) < x ||
-					ry > (y + h) ||
-					(ry + rh) < y);
+			return !(rx > (this.x + this.w) ||
+					(rx + rw) < this.x ||
+					ry > (this.y + this.h) ||
+					(ry + rh) < this.y);
 	}
 
 	image(src) {
@@ -72,7 +71,7 @@ class BasicProp {
 	}
 
 	update() {
-		prepareDynPos.call(this);
+		prepareDynStats.call(this);
 		if (this.sheet) this.animate();
 		if (this.sheet) {
 			c.drawImage(this.img,
@@ -216,12 +215,10 @@ function prepareDynput(...args) {
 		((x instanceof Function) ? x() : null));
 }
 
-function prepareDynPos() {
+function prepareDynStats() {
 	for (let i of ["x", "y", "w", "h"]) {
 		if (this?.[i+"f"] instanceof Function) {
 			this[i] = this[i+"f"]();
-		}/* else {
-			this[i] = i;
-		}*/
+		}
 	}
 }

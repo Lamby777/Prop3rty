@@ -133,3 +133,12 @@ import("/js/test.js").then(() => {
 	// Start updating screen
 	setInterval(update, FRAMETIME);
 });
+
+function sortProps(by) {
+	if (by instanceof Function) props.sort(by);
+	else {
+		if (by === "") {}
+		// 
+		else props.sort((a,b) => a.drawLayer - b.drawLayer);
+	}
+}
