@@ -6,6 +6,7 @@ class BasicProp {
 	constructor(x=0, y=0, w=16, h=16, extra) {
 		this.x = x, this.y = y,
 		this.w = w, this.h = h,
+		this.xf, this.yf, this.wf, this.hf,
 		this.img = null,
 		this.sheet = null,
 		this.name = extra?.name && null, // undefined big bad
@@ -21,6 +22,8 @@ class BasicProp {
 			screenWrap: false,
 			borderBypass: false,
 		};
+		
+		prepareDynPos.call(this);
 	}
 
 	touching(rect) {
@@ -64,19 +67,17 @@ class BasicProp {
 	}
 
 	update() {
-		let [x, y, w, h] = prepareDynput(
-			this.x, this.y,
-			this.w, this.h);
+		prepareDynPos.call(this);
 		if (this.sheet) this.animate();
 		if (this.sheet) {
 			c.drawImage(this.img,
 				(this.frame * (this.img.width/this.frames)),
 				0, (this.img.width / this.frames),
 				this.img.height,
-				x, y);
+				this.x, this.y);
 		} else if (this.img) {
 			c.drawImage(this.img,
-			x, y, w, h);
+			this.x, this.y, this.w, this.h);
 		} else {
 			c.beginPath();
 			if (this.border.size > 0) {
@@ -85,7 +86,7 @@ class BasicProp {
 				//c.strokeRect(this.x, this.y, this.w, this.h);
 			}
 			c.fillStyle = this.col;
-			c.rect(x, y, w, h);
+			c.rect(this.x, this.y, this.w, this.h);
 			c.closePath();
 			c.stroke();
 			c.fill();
@@ -106,17 +107,11 @@ class BasicProp {
 	}
 	
 	afterKeys() {
-		/*let i;
-		for () {
-			let key = afterKeyActions[i];
-			if (key) console.log(key);/*
-			if (currentKeys.includes(key)) return;
-			currentKeys.push(key);
-			console.log(currentKeys);
-			if (downKeyActions[key]) {
-				downKeyActions[key].forEach((f)=>{f()});
+		for (let key of Object.keys(afterKeyActions)) {
+			if (currentKeys.includes(key)) {
+				afterKeyActions[key].forEach((f)=>{f()});
 			}
-		}*/
+		}
 	}
 }
 
@@ -132,23 +127,32 @@ class Prop extends BasicProp {
 		super(x, y, w, h);
 		this.xv = extra?.xv ?? 0,
 		this.yv = extra?.yv ?? 0,
+		this.maxSpeed = extra?.maxSpeed ?? 10,
 		this.terminalVelocity = extra?.terminalVelocity ?? 20,
 		this.collisionLayers = extra?.collisionLayers ?? [];
 		Object.assign(this.meta, {
 			physics: {
 				gravity: "default",
+				acceleration: 50,
+				drag: 0.96,
 			},
 		});
 		props.push(this);
 	}
 
 	prepareUpdate() {
+		this.beforeKeys();
 		if (this.meta.physics.gravity) {
 			// Gravity
 			if (this.meta.physics.gravity === "default") {
 				this.yv -= level.gravity;
-				if (Math.abs(this.yv>this.terminalVelocity))
+				if (Math.abs(this.yv)>this.terminalVelocity)
 					this.yv = (this.yv < 0) ? -this.terminalVelocity : this.terminalVelocity;
+				if (Math.abs(this.xv)>this.maxSpeed)
+					this.xv = (this.xv < 0) ? -this.maxSpeed : this.maxSpeed;
+				if (this.meta.physics?.drag) {
+					this.xv *= this.meta.physics.drag;
+				}
 			} else if (this.meta.physics.gravity === "custom") {
 				// Custom gravity
 			}
@@ -186,6 +190,14 @@ class Prop extends BasicProp {
 		this.prepareUpdate();
 		super.update();
 	}
+
+	beforeKeys() {
+		for (let key of Object.keys(beforeKeyActions)) {
+			if (currentKeys.includes(key)) {
+				beforeKeyActions[key].forEach((f)=>{f()});
+			}
+		}
+	}
 }
 
 class Text extends BasicProp {
@@ -194,5 +206,15 @@ class Text extends BasicProp {
 
 function prepareDynput(...args) {
 	return args.map(x =>
-		((x instanceof Function) ? x() : x));
+		((x instanceof Function) ? x() : null));
+}
+
+function prepareDynPos() {
+	for (let i of ["x", "y", "w", "h"]) {
+		if (this?.[i+"f"] instanceof Function) {
+			this[i] = this[i+"f"]();
+		}/* else {
+			this[i] = i;
+		}*/
+	}
 }

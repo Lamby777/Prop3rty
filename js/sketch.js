@@ -35,8 +35,8 @@ window.onload = window.onresize = function() {
 	// Set canvas to cover full page
 	canvas.width  = cx = window.innerWidth,
 	canvas.height = cy = window.innerHeight,
-	// Set canvas stretching Higher sx or sy (1920/1366 > 1)
-	// means your screen is bigger than default
+	// Set canvas stretch ratios
+	//(sx > 1) means your screen is wider than native
 	sx = cx/DEFAULT_RESOLUTION[0],
 	sy = cy/DEFAULT_RESOLUTION[1];
 }
