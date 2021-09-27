@@ -113,9 +113,8 @@ class BasicProp {
 	
 	afterKeys() {
 		for (let key of Object.keys(afterKeyActions)) {
-			if (currentKeys.includes(key)) {
+			if (currentKeys.includes(key))
 				afterKeyActions[key].forEach((f)=>{f()});
-			}
 		}
 	}
 }
@@ -202,9 +201,8 @@ class Prop extends BasicProp {
 
 	beforeKeys() {
 		for (let key of Object.keys(beforeKeyActions)) {
-			if (currentKeys.includes(key)) {
+			if (currentKeys.includes(key))
 				beforeKeyActions[key].forEach((f)=>{f()});
-			}
 		}
 	}
 }
