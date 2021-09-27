@@ -19,8 +19,6 @@ class BasicProp {
 
 		this.meta = {
 			flipped: false,
-			screenWrap: false,
-			borderBypass: false,
 		};
 		
 		prepareDynPos.call(this);
@@ -95,24 +93,6 @@ class BasicProp {
 		this.afterKeys();
 	}
 
-	// Border bypass and screen wrapping
-	if (!this.meta.borderBypass) {
-		if (this.x + this.w > cx) {
-			this.x = cx - this.w;
-		}
-		if (this.x < 0) {
-			this.x = 0;
-		}
-	}
-
-	if (this.meta.screenWrap) {
-		if (this.x + this.w >= cx) {
-			this.x = 1;
-		} else if (this.x <= 0) {
-			this.x = (cx - this.w) - 1;
-		}
-	}
-
 	animate() {
 		// Function for choosing frames.
 		// Customize it to whatever you need.
@@ -149,6 +129,9 @@ class Prop extends BasicProp {
 		this.terminalVelocity = extra?.terminalVelocity ?? 20,
 		this.collisionLayers = extra?.collisionLayers ?? [];
 		Object.assign(this.meta, {
+			screenWrap: false,
+			borderBypassX: true,
+			borderBypassY: true,
 			physics: {
 				gravity: "default",
 				acceleration: 50,
@@ -185,6 +168,24 @@ class Prop extends BasicProp {
 		// Apply velocities
 		this.x += this.xv;
 		this.y -= this.yv;
+
+		// Border bypass and screen wrapping
+		if (!this.meta.borderBypassX) {
+			if (this.x + this.w > cx) {
+				this.x = cx - this.w;
+			}
+			if (this.x < 0) {
+				this.x = 0;
+			}
+		}
+
+		if (this.meta.screenWrap) {
+			if (this.x + this.w >= cx) {
+				this.x = 1;
+			} else if (this.x <= 0) {
+				this.x = (cx - this.w) - 1;
+			}
+		}
 	}
 
 	update() {
