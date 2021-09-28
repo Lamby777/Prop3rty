@@ -76,13 +76,13 @@ function redrawFramecount() {
 }
 
 function getPropsByType(type) {
-	return props.filter((x)=>{x?.type.includes?.(type)});
+	return props.filter((x)=>{return x?.type.includes?.(type)});
 }
 
 // Like "getElementById" for props.
 // Duplicate names on props is discouraged, use "type" for that.
 function getPropsByName(name) {
-	return props.filter((x)=>{x?.name === name});
+	return props.filter((x)=>{return x?.name === name});
 }
 
 

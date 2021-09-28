@@ -157,6 +157,7 @@ class Prop extends BasicProp {
 				gravity: "default",
 				acceleration: 50,
 				drag: 0.9,
+				collisionRoughness: 0,
 				immovable: false,
 			},
 		});
@@ -201,10 +202,18 @@ class Prop extends BasicProp {
 
 				// If left side collision
 				switch (res[0]) {
-					case "left":   this.x = (i.x - this.w); break
-					case "right":  this.x = (i.x + this.w); break
-					case "top":    this.y = (i.y - this.h); break
-					case "bottom": this.y = (i.y + this.h); break
+					case "left":
+						this.x = (i.x - this.w);
+						this.xv * i.meta.physics.collisionRoughness; break;
+					case "right":
+						this.x = (i.x + this.w);
+						this.xv * i.meta.physics.collisionRoughness; break;
+					case "top":
+						this.y = (i.y - this.h);
+						this.yv * i.meta.physics.collisionRoughness; break;
+					case "bottom":
+						this.y = (i.y + this.h);
+						this.yv * i.meta.physics.collisionRoughness; break;
 				}
 			}
 		}
