@@ -67,9 +67,8 @@ class BasicProp {
 	}
 
 	update() {
-		prepareDynStats.call(this);
-		if (this.sheet) this.animate();
 		if (this.sheet) {
+			this.animate();
 			c.drawImage(this.img,
 				(this.frame * (this.img.width/this.frames)),
 				0, (this.img.width / this.frames),
@@ -145,6 +144,7 @@ class Prop extends BasicProp {
 
 	prepareUpdate() {
 		this.beforeKeys();
+		prepareDynStats.call(this);
 		if (this.meta.physics.gravity) { // Apply gravity if exists
 			if (this.meta.physics.gravity instanceof Function) {
 				// Custom Gravity Function
