@@ -28,8 +28,9 @@ var bruh = new Prop(64, 0, 32, 32, {
 	collisionLayers: [1],
 });
 bruh.color("red");
+bruh.meta.physics.gravity = null;
 bruh.meta.physics.acceleration = 1;
-bruh.maxSpeed = 10;
+bruh.maxSpeed = 1;
 
 
 var bruh2 = new Prop(128, 0, 32, 32, {
@@ -38,6 +39,7 @@ var bruh2 = new Prop(128, 0, 32, 32, {
 	collisionLayers: [1],
 });
 bruh2.color("orange");
+bruh2.meta.physics.gravity = null;
 bruh2.meta.physics.acceleration = 1;
 bruh2.maxSpeed = 10;
 
@@ -61,4 +63,8 @@ bindKey("KeyD", "before", ()=>{
 
 bindKey("KeyQ", "down", ()=>{
 	bruh.y += 50;
+});
+
+bindKey("KeyT", "down", ()=>{
+	console.log(bruh.collide(bruh, bruh2));
 });

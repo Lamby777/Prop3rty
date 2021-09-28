@@ -24,18 +24,41 @@ class BasicProp {
 		prepareDynStats.call(this);
 	}
 
-	touching(rect, axes) {
-		if (axes)
-		   return [!(rect.x > (this.x + this.w) ||
-					this.x  > (rect.x + rect.w)),
-				  !(rect.y  > (this.y + this.h) ||
-					this.y  > (rect.y + rect.h))];
+	touching(rect, sides) {
+		if (sides)
+		   return [ !(rect.x > (this.x + this.w)),   // Right side
+					!(this.x > (rect.x + rect.w)),   // Left side
+					!(rect.y > (this.y + this.h)),   // Above
+					!(this.y > (rect.y + rect.h)),]; // Below
 		else
-			return !(rect.x > (this.x + this.w) ||
-					this.x  > (rect.x + rect.w) ||
-					rect.y  > (this.y + this.h) ||
-					this.y  > (rect.y + rect.h));
+			return !(rect.x > (this.x + this.w) || // If other obj on right
+					this.x  > (rect.x + rect.w) || // If other obj to left
+					rect.y  > (this.y + this.h) || // If other obj above cube
+					this.y  > (rect.y + rect.h));  // If other obj below
 	}
+
+	collide(r1,r2) { // It's borrowing, not stealing! :)
+		let dx=(r1.x+r1.w/2)-(r2.x+r2.w/2);
+		let dy=(r1.y+r1.h/2)-(r2.y+r2.h/2);
+		let width=(r1.w+r2.w)/2;
+		let height=(r1.h+r2.h)/2;
+		let crossWidth=width*dy;
+		let crossHeight=height*dx;
+		let collision={ // Clockwise
+			top: false,
+			right: false,
+			bottom: false,
+			left: false};
+
+		if(Math.abs(dx)<=width && Math.abs(dy)<=height){
+			if(crossWidth>crossHeight){
+				collision[((crossWidth>(-crossHeight))?'bottom':'left')];
+			} else {
+				collision.push((crossWidth>(-crossHeight))?'right':'top');
+			}
+		} return(collision);
+	}
+
 
 	image(src) {
 		if (!src) this.color();
@@ -152,39 +175,46 @@ class Prop extends BasicProp {
 			} else if (this.meta.physics.gravity === "default") {
 				// Default Gravity
 				this.yv -= level.gravity;
-				if (Math.abs(this.yv)>this.terminalVelocity)
-					this.yv = (this.yv < 0) ? -this.terminalVelocity : this.terminalVelocity;
-				if (Math.abs(this.xv)>this.maxSpeed)
-					this.xv = (this.xv < 0) ? -this.maxSpeed : this.maxSpeed;
-				if (this.meta.physics?.drag) {
-					this.xv *= this.meta.physics.drag;
-				}
 			}
+		}
 
-			// Collision detection
-			if (this.collisionLayers.length > 0 &&
-				!this.meta.physics.immovable) {
-				let colProps = props.filter((prop) => {
-					return (
-						prop.collisionLayers.some((val) => {
-							return this.collisionLayers.includes(val)
-						}) && prop !== this
-					);
-				});
+		if (Math.abs(this.yv)>this.terminalVelocity)
+			this.yv = (this.yv < 0) ? -this.terminalVelocity : this.terminalVelocity;
+		if (Math.abs(this.xv)>this.maxSpeed)
+			this.xv = (this.xv < 0) ? -this.maxSpeed : this.maxSpeed;
+		if (this.meta.physics?.drag) {
+			this.xv *= this.meta.physics.drag;
+		}
 
-				for (let i of colProps) {
-					let res = this.touching(i, true);//, true);
-					//if (this.name = "Bruh Cube") console.log(res);
-					if (res[1] === true) { // Deep equal to prevent truthy
-						//console.log(res[1]); // Returns undefined fsr
-						//console.log(i.name);
-						this.yv = 0;
-					} else {
-						//console.log();
-					}
+		// Collision detection
+		if (this.collisionLayers.length > 0 &&
+			!this.meta.physics.immovable) {
+			let colProps = props.filter((prop) => {
+				return (
+					prop.collisionLayers.some((val) => {
+						return this.collisionLayers.includes(val)
+					}) && prop !== this
+				);
+			});
+
+			for (let i of colProps) {
+				let res = this.touching(i, true);
+
+				// 0 = Right
+				// 1 = Left
+				// 2 = Top
+				// 3 = Bottom
+
+				// If left side collision
+				if (res[1]) {
+					this.xv = 0;
+					//console.log("test");
+				} else {
+					//console.log();
 				}
 			}
 		}
+
 		if (this.sheet) this.animate();
 	}
 

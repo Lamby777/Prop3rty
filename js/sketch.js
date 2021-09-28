@@ -50,7 +50,9 @@ function update() {
 		c.strokeStyle = "white";
 		c.fillStyle = "black";
 		c.lineWidth = 1;
-		c.strokeText(fps.toString(), 0.8*cx, 0.8*cy);
+		c.strokeText(
+			fps.toString(),
+		0.8*cx, 0.8*cy);
 	}
 }
 
