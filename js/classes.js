@@ -135,7 +135,7 @@ class Prop extends BasicProp {
 			physics: {
 				gravity: "default",
 				acceleration: 50,
-				drag: 0.96,
+				drag: 0.9,
 				immovable: false,
 			},
 		});
@@ -167,16 +167,15 @@ class Prop extends BasicProp {
 				let colProps = props.filter((prop) => {
 					return (
 						prop.collisionLayers.some((val) => {
-							return this.collisionLayers.includes(val)})
-						&&
-						prop !== this
+							return this.collisionLayers.includes(val)
+						}) && prop !== this
 					);
 				});
 
 				for (let i of colProps) {
 					let res = this.touching(i, true);//, true);
 					//if (this.name = "Bruh Cube") console.log(res);
-					if (res[1] === true) { // Deep equal to prevent truthy values
+					if (res[1] === true) { // Deep equal to prevent truthy
 						//console.log(res[1]); // Returns undefined fsr
 						//console.log(i.name);
 						this.yv = 0;

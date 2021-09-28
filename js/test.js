@@ -35,6 +35,7 @@ bruh.maxSpeed = 10;
 var bruh2 = new Prop(128, 0, 32, 32, {
 	border: {size: 4},
 	name: "Bruh Cube #2",
+	collisionLayers: [1],
 });
 bruh2.color("orange");
 bruh2.meta.physics.acceleration = 1;
@@ -56,4 +57,8 @@ bindKey("KeyA", "before", ()=>{
 
 bindKey("KeyD", "before", ()=>{
 	bruh.xv += bruh.meta.physics.acceleration;
+});
+
+bindKey("KeyQ", "down", ()=>{
+	bruh.y += 50;
 });
