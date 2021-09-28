@@ -30,7 +30,7 @@ var bruh = new Prop(64, 0, 32, 32, {
 bruh.color("red");
 bruh.meta.physics.gravity = null;
 bruh.meta.physics.acceleration = 1;
-bruh.maxSpeed = 1;
+bruh.maxSpeed = 5;
 
 
 var bruh2 = new Prop(128, 0, 32, 32, {

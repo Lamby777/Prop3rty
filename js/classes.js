@@ -199,11 +199,11 @@ class Prop extends BasicProp {
 				let res = this.collisionsWith(i);
 
 				// If left side collision
-				if (res[1]) {
-					this.xv = 0;
-					//console.log("test");
-				} else {
-					//console.log();
+				switch (res[0]) {
+					case "left":   this.x = (i.x - this.w); break
+					case "right":  this.x = (i.x + this.w); break
+					case "top":    this.y = (i.y - this.h); break
+					case "bottom": this.y = (i.y + this.h); break
 				}
 			}
 		}
@@ -247,7 +247,28 @@ class Prop extends BasicProp {
 	}
 }
 
-class Text extends BasicProp {
+class Text extends AbstractObject {
+	constructor(x=0,y=0,text,extra) {
+		super(x,y,extra);
+		
+		// If text given isn't a string, make it one.
+		if (text === undefined) text = "";
+		else if (text instanceof Number) text = Number(text);
+		else if (text instanceof Function) {
+			textf = text;
+			text = "";
+		}
+
+		this.col = extra?.col ?? "white",
+		this.drawLayer = extra?.drawLayer ?? 500,
+		this.border = {
+			size: extra?.border?.size ?? 4,
+			col: extra?.border?.col ?? "white",
+		};
+	}
+}
+
+class TextProp extends BasicProp {
 	//
 }
 
