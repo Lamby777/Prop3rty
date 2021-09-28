@@ -162,6 +162,7 @@ class Prop extends BasicProp {
 			}
 
 			// Collision detection
+<<<<<<< HEAD
 			if (this.collisionLayers.length > 0 &&
 				!this.meta.physics.immovable) {
 				let colProps = props.filter((prop) => {
@@ -177,6 +178,19 @@ class Prop extends BasicProp {
 						this.yv = 0;
 					} else {
 						//console.log();
+=======
+			if (!this.meta.physics.immovable &&
+				this.collisionLayers.length > 0) {
+				let colProps = props.filter((prop)=>{
+					return prop.collisionLayers.some((val) =>
+						this.collisionLayers.includes(val));
+				});
+				for (let i of colProps) {
+					let res = this.touching(i, true);
+					if (res[1]) {
+						//console.log(i.name); // Returns undefined fsr
+						this.yv = 0;
+>>>>>>> origin/master
 					}
 				}
 			}
