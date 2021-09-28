@@ -193,8 +193,7 @@ class Prop extends BasicProp {
 		if (!this.meta.borderBypassX) {
 			if (this.x + this.w > cx) {
 				this.x = cx - this.w;
-			}
-			if (this.x < 0) {
+			} else if (this.x < 0) {
 				this.x = 0;
 			}
 		}
