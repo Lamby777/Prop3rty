@@ -26,15 +26,15 @@ class BasicProp {
 
 	touching(rect, axes) {
 		if (axes)
-			return [(rect.x > (this.x + this.w) ||
-				(rect.x + rect.w) < this.x),
-				(rect.y > (this.y + this.h) ||
-				(rect.y + rect.h) < this.y)];
+		   return [!(rect.x > (this.x + this.w) ||
+					this.x  > (rect.x + rect.w)),
+				  !(rect.y  > (this.y + this.h) ||
+					this.y  > (rect.y + rect.h))];
 		else
 			return !(rect.x > (this.x + this.w) ||
-					(rect.x + rect.w) < this.x ||
-					rect.y > (this.y + this.h) ||
-					(rect.y + rect.h) < this.y);
+					this.x  > (rect.x + rect.w) ||
+					rect.y  > (this.y + this.h) ||
+					this.y  > (rect.y + rect.h));
 	}
 
 	image(src) {
@@ -165,13 +165,17 @@ class Prop extends BasicProp {
 			if (this.collisionLayers.length > 0 &&
 				!this.meta.physics.immovable) {
 				let colProps = props.filter((prop) => {
-					return prop.collisionLayers.some((val) => {
-						return this.collisionLayers.includes(val)});
+					return (
+						prop.collisionLayers.some((val) => {
+							return this.collisionLayers.includes(val)})
+						&&
+						prop !== this
+					);
 				});
 
 				for (let i of colProps) {
-					let res = this.touching(i, true);
-					//console.log(res);
+					let res = this.touching(i, true);//, true);
+					//if (this.name = "Bruh Cube") console.log(res);
 					if (res[1] === true) { // Deep equal to prevent truthy values
 						//console.log(res[1]); // Returns undefined fsr
 						//console.log(i.name);
