@@ -31,30 +31,26 @@ class BasicProp {
 					!(rect.y > (this.y + this.h)),   // Above
 					!(this.y > (rect.y + rect.h)),]; // Below
 		else
-			return !(rect.x > (this.x + this.w) || // If other obj on right
-					this.x  > (rect.x + rect.w) || // If other obj to left
-					rect.y  > (this.y + this.h) || // If other obj above cube
-					this.y  > (rect.y + rect.h));  // If other obj below
+			return !(rect.x > (this.x + this.w) ||   // If other obj on right
+					this.x  > (rect.x + rect.w) ||   // If other obj to left
+					rect.y  > (this.y + this.h) ||   // If other obj above cube
+					this.y  > (rect.y + rect.h));    // If other obj below
 	}
 
-	collide(r1,r2) { // It's borrowing, not stealing! :)
-		let dx=(r1.x+r1.w/2)-(r2.x+r2.w/2);
-		let dy=(r1.y+r1.h/2)-(r2.y+r2.h/2);
-		let width=(r1.w+r2.w)/2;
-		let height=(r1.h+r2.h)/2;
+	collisionsWith(r2) { // It's borrowing, not stealing! :)
+		let dx=(this.x+this.w/2)-(r2.x+r2.w/2);
+		let dy=(this.y+this.h/2)-(r2.y+r2.h/2);
+		let width=(this.w+r2.w)/2;
+		let height=(this.h+r2.h)/2;
 		let crossWidth=width*dy;
 		let crossHeight=height*dx;
-		let collision={ // Clockwise
-			top: false,
-			right: false,
-			bottom: false,
-			left: false};
+		let collision=[];
 
 		if(Math.abs(dx)<=width && Math.abs(dy)<=height){
-			if(crossWidth>crossHeight){
-				collision[((crossWidth>(-crossHeight))?'bottom':'left')];
+			if(crossWidth>crossHeight) {
+				collision.push((crossWidth>(-crossHeight))?"bottom":"left");
 			} else {
-				collision.push((crossWidth>(-crossHeight))?'right':'top');
+				collision.push((crossWidth>(-crossHeight))?"right":"top");
 			}
 		} return(collision);
 	}
@@ -139,10 +135,6 @@ class BasicProp {
 
 
 
-
-
-
-
 class Prop extends BasicProp {
 	constructor(x=0, y=0, w=16, h=16, extra) {
 		super(x, y, w, h, extra);
@@ -198,12 +190,7 @@ class Prop extends BasicProp {
 			});
 
 			for (let i of colProps) {
-				let res = this.touching(i, true);
-
-				// 0 = Right
-				// 1 = Left
-				// 2 = Top
-				// 3 = Bottom
+				let res = this.collisionsWith(i);
 
 				// If left side collision
 				if (res[1]) {

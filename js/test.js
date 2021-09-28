@@ -66,5 +66,5 @@ bindKey("KeyQ", "down", ()=>{
 });
 
 bindKey("KeyT", "down", ()=>{
-	console.log(bruh.collide(bruh, bruh2));
+	console.log(bruh.collisionsWith(bruh2));
 });
