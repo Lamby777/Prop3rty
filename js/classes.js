@@ -2,15 +2,21 @@
 
 // Prop Classes
 
-class BasicProp {
-	constructor(x=0, y=0, w=16, h=16, extra) {
+class AbstractObject {
+	constructor(x=0, y=0, extra) {
 		this.x = x, this.y = y,
+		this.name = extra?.name ?? null, // undefined big bad
+		this.type = extra?.type ?? ["Generic"];
+	}
+}
+
+class BasicProp extends AbstractObject {
+	constructor(x=0, y=0, w=16, h=16, extra) {
+		super(x, y, extra);
 		this.w = w, this.h = h,
 		this.xf, this.yf, this.wf, this.hf,
 		this.img = null,
 		this.sheet = null,
-		this.name = extra?.name ?? null, // undefined big bad
-		this.type = extra?.type ?? ["Generic"],
 		this.col = extra?.col ?? "white",
 		this.drawLayer = extra?.drawLayer ?? 500,
 		this.border = {
