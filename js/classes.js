@@ -182,6 +182,7 @@ class Prop extends BasicProp {
 			this.xv = (this.xv < 0) ? -this.maxSpeed : this.maxSpeed;
 		if (this.meta.physics?.drag) {
 			this.xv *= this.meta.physics.drag;
+			if (!this.meta.physics.gravity) this.yv *= this.meta.physics.drag;
 		}
 
 		// Collision detection
