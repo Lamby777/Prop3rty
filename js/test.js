@@ -8,12 +8,17 @@ var ground = new Prop(0, 400, 500, 400, {
 	name: "Grass",
 	type: ["Environment"],
 	collisionLayers: [1],
+	meta: {
+		physics: {
+			immovable: true,
+		}
+	}
 });
 ground.yf = (() => cy*0.7);
 ground.wf = (() => cx);
 ground.meta.physics.gravity = null;
 ground.color("green");
-ground.drawLayer = 600;
+ground.drawLayer = 400;
 
 
 var bruh = new Prop(64, 0, 32, 32, {

@@ -10,7 +10,7 @@ class BasicProp {
 		this.img = null,
 		this.sheet = null,
 		this.name = extra?.name && null, // undefined big bad
-		this.type = extra?.type && "Generic",
+		this.type = extra?.type && ["Generic"],
 		this.col = extra?.col ?? "white",
 		this.drawLayer = extra?.drawLayer ?? 500,
 		this.border = {
@@ -26,20 +26,16 @@ class BasicProp {
 	}
 
 	touching(rect, axes) {
-		let [rx, ry, rw, rh] = prepareDynput(
-			rect.x, rect.y,
-			rect.w, rect.h);
-		
 		if (axes)
-			return [((rx > (this.x + this.w) ||
-				(rx + rw) < this.x),
-				(ry > (this.y + this.h) ||
-				(ry + rh) < this.y))];
+			return [(rect.x > (this.x + this.w) ||
+				(rect.x + rect.w) < this.x),
+				(rect.y > (this.y + this.h) ||
+				(rect.y + rect.h) < this.y)];
 		else
-			return !(rx > (this.x + this.w) ||
-					(rx + rw) < this.x ||
-					ry > (this.y + this.h) ||
-					(ry + rh) < this.y);
+			return !(rect.x > (this.x + this.w) ||
+					(rect.x + rect.w) < this.x ||
+					rect.y > (this.y + this.h) ||
+					(rect.y + rect.h) < this.y);
 	}
 
 	image(src) {
@@ -127,7 +123,7 @@ class BasicProp {
 
 class Prop extends BasicProp {
 	constructor(x=0, y=0, w=16, h=16, extra) {
-		super(x, y, w, h);
+		super(x, y, w, h, extra);
 		this.xv = extra?.xv ?? 0,
 		this.yv = extra?.yv ?? 0,
 		this.maxSpeed = extra?.maxSpeed ?? 10,
@@ -141,6 +137,7 @@ class Prop extends BasicProp {
 				gravity: "default",
 				acceleration: 50,
 				drag: 0.96,
+				immovable: false,
 			},
 		});
 		props.push(this);
@@ -165,8 +162,23 @@ class Prop extends BasicProp {
 			}
 
 			// Collision detection
-			if (this.collisionLayers.length > 0) {
-				//
+			if (this.collisionLayers.length > 0 &&
+				!this.meta.physics.immovable) {
+				let colProps = props.filter((prop) => {
+					return prop.collisionLayers.some((val) => {
+						return this.collisionLayers.includes(val)});
+				});
+
+				for (let i of colProps) {
+					let res = this.touching(i, true);
+					//console.log(res);
+					if (res[1] === true) { // Deep equal to prevent truthy values
+						//console.log(res[1]); // Returns undefined fsr
+						this.yv = 0;
+					} else {
+						//console.log();
+					}
+				}
 			}
 		}
 		if (this.sheet) this.animate();

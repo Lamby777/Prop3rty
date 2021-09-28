@@ -20,12 +20,6 @@ var lastFramecount, fps,
 		gravity: 0.1,
 	};
 
-// Dynamic Values, common arrow functions for prop parameters
-const dv = {
-	cx: () => cx,
-	cy: () => cy,
-}
-
 // Canvas
 let canvas = document.getElementById("prop-canvas");
 const c = canvas.getContext("2d");
