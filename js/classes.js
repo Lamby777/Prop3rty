@@ -182,7 +182,9 @@ class Prop extends BasicProp {
 			}
 		}
 		if (this.sheet) this.animate();
-		
+	}
+
+	applyVelocity() {
 		// Apply velocities
 		this.x += this.xv;
 		this.y -= this.yv;
@@ -207,7 +209,7 @@ class Prop extends BasicProp {
 	}
 
 	update() {
-		this.prepareUpdate();
+		this.applyVelocity();
 		super.update();
 	}
 
