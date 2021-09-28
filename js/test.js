@@ -42,7 +42,6 @@ bruh2.maxSpeed = 10;
 
 sortProps();
 
-
 bindKey("KeyW", "down", ()=>{
 	bruh.yv = 5;
 });

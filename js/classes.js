@@ -9,15 +9,14 @@ class BasicProp {
 		this.xf, this.yf, this.wf, this.hf,
 		this.img = null,
 		this.sheet = null,
-		this.name = extra?.name && null, // undefined big bad
-		this.type = extra?.type && ["Generic"],
+		this.name = extra?.name ?? null, // undefined big bad
+		this.type = extra?.type ?? ["Generic"],
 		this.col = extra?.col ?? "white",
 		this.drawLayer = extra?.drawLayer ?? 500,
 		this.border = {
 			size: extra?.border?.size ?? 4,
 			col: extra?.border?.col ?? "white",
-		};
-
+		},
 		this.meta = {
 			flipped: false,
 		};
@@ -67,6 +66,7 @@ class BasicProp {
 	}
 
 	update() {
+		if (this.constructor === BasicProp ) {} // If direct instance of BasicProp
 		if (this.sheet) {
 			this.animate();
 			c.drawImage(this.img,
@@ -174,6 +174,7 @@ class Prop extends BasicProp {
 					//console.log(res);
 					if (res[1] === true) { // Deep equal to prevent truthy values
 						//console.log(res[1]); // Returns undefined fsr
+						//console.log(i.name);
 						this.yv = 0;
 					} else {
 						//console.log();
