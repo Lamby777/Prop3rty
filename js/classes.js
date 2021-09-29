@@ -1,7 +1,6 @@
 "use strict";
 
 // Constants
-
 const DEFAULT_DRAG = 0.8;
 
 
@@ -202,26 +201,10 @@ class Prop extends BasicProp {
 				);
 			});
 
-			for (let i of colProps) {
-				let res = this.collisionsWith(i);
-
-				// If left side collision
-				switch (res[0]) {
-					case "left":
-						this.x = (i.x - this.w);
-						this.xv * i.meta.physics.collisionRoughness; break;
-					case "right":
-						this.x = (i.x + this.w);
-						this.xv * i.meta.physics.collisionRoughness; break;
-					case "top":
-						this.y = (i.y - this.h);
-						this.yv * i.meta.physics.collisionRoughness; break;
-					case "bottom":
-						this.y = (i.y + this.h);
-						this.yv * i.meta.physics.collisionRoughness; break;
-				}
-			}
+			collisionRemoveVelocity.call(this, colProps);
 		}
+
+		this.controlKeys();
 
 		if (this.sheet) this.animate();
 	}
@@ -250,6 +233,7 @@ class Prop extends BasicProp {
 	}
 
 	update() {
+		this.controlKeys();
 		this.applyVelocity();
 		super.update();
 	}
@@ -258,6 +242,13 @@ class Prop extends BasicProp {
 		for (let key of Object.keys(beforeKeyActions)) {
 			if (currentKeys.includes(key))
 				beforeKeyActions[key].forEach((f)=>{f()});
+		}
+	}
+
+	controlKeys() {
+		for (let key of Object.keys(controlKeyActions)) {
+			if (currentKeys.includes(key))
+				controlKeyActions[key].forEach((f)=>{f()});
 		}
 	}
 }
@@ -304,4 +295,26 @@ function prepareDynStats() {
 			this[i] = this[i+"f"]();
 		}
 	}
+}
+
+function collisionRemoveVelocity(colProps) {
+	for (let i of colProps) {
+		let res = this.collisionsWith(i);
+		// If left side collision
+		switch (res[0]) {
+			case "left":
+				this.x = (i.x - this.w);
+				this.xv *= i.meta.physics.collisionRoughness; break;
+			case "right":
+				this.x = (i.x + this.w);
+				this.xv *= i.meta.physics.collisionRoughness; break;
+			case "top":
+				this.y = (i.y - this.h);
+				this.yv *= i.meta.physics.collisionRoughness; break;
+				//this.yv = 0; break;
+			case "bottom":
+				this.y = (i.y + this.h);
+				this.yv *= i.meta.physics.collisionRoughness; break;
+		}
+	}/**/
 }

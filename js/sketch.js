@@ -92,6 +92,7 @@ function getPropsByName(name) {
 var currentKeys = [];
 
 var beforeKeyActions = {}, // Before physics
+	controlKeyActions = {}, // After vel modification, before vel application
 	afterKeyActions = {}, // Before update (After physics)
 	upKeyActions = {}, // On key released
 	downKeyActions = {}; // On key pressed (Fire once)
@@ -118,13 +119,13 @@ document.addEventListener("keyup", (e)=>{
 // Type is the type of key input ("up" "down" or a while)
 // Action is the function to run
 function bindKey(key, type, action) {
-	if (["before", "after", "down", "up"].includes(type)) {
+	if (["before", "after", "control", "down", "up"].includes(type)) {
 		let currentActionArray = window[type + "KeyActions"];
 		if (!currentActionArray[key]?.length) currentActionArray[key] = [];
 		currentActionArray[key].push(action);
 		//return currentActionArray[key].length-1;
 	} else throw TypeError(
-		'Prop3 bindKey argument #2 requires "before," "after," "down," or "up."');
+		'Prop3 bindKey argument #2 requires "before," "after," "control," "down," or "up."');
 }
 
 import("/js/test.js").then(() => {

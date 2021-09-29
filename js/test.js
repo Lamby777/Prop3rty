@@ -26,7 +26,7 @@ var bruh = new Prop(64, 0, 32, 32, {
 	name: "Bruh Cube",
 	type: ["Player"],
 	collisionLayers: [1],
-	maxSpeed: 5,
+	maxSpeed: 2,
 	meta: {
 		physics: {
 			acceleration: 1,
@@ -41,7 +41,7 @@ var bruh2 = new Prop(128, 0, 32, 32, {
 	border: {size: 4},
 	name: "Bruh Cube #2",
 	collisionLayers: [1],
-	maxSpeed: 10,
+	maxSpeed: 3,
 	meta: {
 		physics: {
 			acceleration: 1,
@@ -60,16 +60,20 @@ bindKey("KeyS", "down", ()=>{
 	bruh.yv -= 3;
 });
 
-bindKey("KeyA", "before", ()=>{
+bindKey("KeyA", "control", ()=>{
 	bruh.xv -= bruh.meta.physics.acceleration;
 });
 
-bindKey("KeyD", "before", ()=>{
+bindKey("KeyD", "control", ()=>{
 	bruh.xv += bruh.meta.physics.acceleration;
 });
 
 bindKey("KeyQ", "down", ()=>{
 	bruh.y += 50;
+});
+
+bindKey("KeyE", "down", ()=>{
+	bruh.y -= 50;
 });
 
 bindKey("KeyT", "down", ()=>{
