@@ -1,5 +1,10 @@
 "use strict";
 
+// Constants
+
+const DEFAULT_DRAG = 0.8;
+
+
 // Prop Classes
 
 class AbstractObject {
@@ -140,7 +145,6 @@ class BasicProp extends AbstractObject {
 
 
 
-
 class Prop extends BasicProp {
 	constructor(x=0, y=0, w=16, h=16, extra) {
 		super(x, y, w, h, extra);
@@ -154,11 +158,12 @@ class Prop extends BasicProp {
 			borderBypassX: true,
 			borderBypassY: true,
 			physics: {
-				gravity: "default",
-				acceleration: 50,
-				drag: 0.9,
-				collisionRoughness: 0,
-				immovable: false,
+				gravity: extra?.meta?.physics?.gravity !== undefined ?
+					extra?.meta?.physics?.gravity : "default",
+				acceleration: extra?.meta?.physics?.acceleration ?? 50,
+				drag: extra?.meta?.physics?.drag ?? DEFAULT_DRAG,
+				collisionRoughness: extra?.meta?.physics?.collisionRoughness ?? 0,
+				immovable: extra?.meta?.physics?.immovable ?? false,
 			},
 		});
 		props.push(this);
@@ -256,6 +261,12 @@ class Prop extends BasicProp {
 		}
 	}
 }
+
+/*class Environment extends Prop {
+	constructor {
+		super();
+	}
+}*/
 
 class Text extends AbstractObject {
 	constructor(x=0,y=0,text,extra) {

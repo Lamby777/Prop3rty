@@ -11,12 +11,12 @@ var ground = new Prop(0, 400, 500, 400, {
 	meta: {
 		physics: {
 			immovable: true,
-		}
-	}
+			gravity: null,
+		},
+	},
 });
 ground.yf = (() => cy*0.7);
 ground.wf = (() => cx);
-ground.meta.physics.gravity = null;
 ground.color("green");
 ground.drawLayer = 400;
 
@@ -26,22 +26,29 @@ var bruh = new Prop(64, 0, 32, 32, {
 	name: "Bruh Cube",
 	type: ["Player"],
 	collisionLayers: [1],
+	maxSpeed: 5,
+	meta: {
+		physics: {
+			acceleration: 1,
+		},
+	},
 });
 bruh.color("red");
 //bruh.meta.physics.gravity = null;
-bruh.meta.physics.acceleration = 1;
-bruh.maxSpeed = 5;
 
 
 var bruh2 = new Prop(128, 0, 32, 32, {
 	border: {size: 4},
 	name: "Bruh Cube #2",
 	collisionLayers: [1],
+	maxSpeed: 10,
+	meta: {
+		physics: {
+			acceleration: 1,
+		},
+	},
 });
 bruh2.color("orange");
-//bruh2.meta.physics.gravity = null;
-bruh2.meta.physics.acceleration = 1;
-bruh2.maxSpeed = 10;
 
 sortProps();
 
@@ -66,5 +73,5 @@ bindKey("KeyQ", "down", ()=>{
 });
 
 bindKey("KeyT", "down", ()=>{
-	console.log(bruh.collisionsWith(bruh2));
+	console.log(bruh,bruh2,ground);
 });
