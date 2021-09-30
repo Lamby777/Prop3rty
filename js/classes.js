@@ -9,6 +9,7 @@ const DEFAULT_DRAG = 0.8; //0.8;
 class AbstractProp {
 	constructor(x=0, y=0, extra) {
 		this.x = x, this.y = y,
+		this.dynamics = {},
 		this.name = extra?.name ?? null, // undefined big bad
 		this.type = extra?.type ?? ["Generic"];
 	}
@@ -58,7 +59,7 @@ class BasicProp extends AbstractProp {
 			flipped: false,
 		};
 		
-		prepareDynStats.call(this);
+		prepareDynamics.call(this);
 	}
 
 	touching(rect, sides) {
@@ -198,7 +199,7 @@ class Prop extends BasicProp {
 
 	prepareUpdate() {
 		this.beforeKeys();
-		prepareDynStats.call(this);
+		prepareDynamics.call(this);
 		
 		if (this.meta.physics.gravity) { // Apply gravity if exists
 			if (this.meta.physics.gravity instanceof Function) {
@@ -325,6 +326,17 @@ function prepareDynStats() {
 		if (this?.[i+"f"] instanceof Function) {
 			this[i] = this[i+"f"]();
 		}
+	}
+}
+
+function prepareDynamics() {
+	// Check if dynamics is valid
+	if ((!this.dynamics instanceof Object) ||
+		Object.keys(this.dynamics).length) return;
+	
+	// Apply each dynamic
+	for (let dynamic in this.dynamics) {
+		this[dynamic] = dynamics[dynamic];
 	}
 }
 
