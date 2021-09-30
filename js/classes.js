@@ -6,7 +6,7 @@ const DEFAULT_DRAG = 0.8; //0.8;
 
 // Prop Classes
 
-class AbstractObject {
+class AbstractProp {
 	constructor(x=0, y=0, extra) {
 		this.x = x, this.y = y,
 		this.name = extra?.name ?? null, // undefined big bad
@@ -14,7 +14,7 @@ class AbstractObject {
 	}
 }
 
-class Camera extends AbstractObject {
+class Camera extends AbstractProp {
 	static instances = [];
 
 	constructor(x=0, y=0, extra) {
@@ -41,7 +41,7 @@ class Camera extends AbstractObject {
 	setCameraViewport(w,h) {}
 }
 
-class BasicProp extends AbstractObject {
+class BasicProp extends AbstractProp {
 	constructor(x=0, y=0, w=16, h=16, extra) {
 		super(x, y, extra);
 		this.w = w, this.h = h,
@@ -290,7 +290,7 @@ class Prop extends BasicProp {
 	}
 }*/
 
-class Text extends AbstractObject {
+class Text extends AbstractProp {
 	constructor(x=0,y=0,text,extra) {
 		super(x,y,extra);
 		
