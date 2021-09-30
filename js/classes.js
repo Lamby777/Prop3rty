@@ -15,12 +15,15 @@ class AbstractObject {
 }
 
 class Camera extends AbstractObject {
-	#active = false;
+	#active;
+	static instances = [];
 
 	constructor(x=0, y=0, extra) {
 		super(x, y, extra);
+		this.active = false,
 		this.w = extra?.w ?? cx,
 		this.h = extra?.h ?? cy;
+		Camera.instances.push(this);
 	}
 
 	static test() {
@@ -111,7 +114,7 @@ class BasicProp extends AbstractObject {
 	}
 
 	update() {
-		if (this.constructor === BasicProp ) {} // If direct instance of BasicProp
+		//if (this.constructor === BasicProp ) {} // If direct instance of BasicProp
 		if (this.sheet) {
 			this.animate();
 			c.drawImage(this.img,
@@ -188,6 +191,7 @@ class Prop extends BasicProp {
 	prepareUpdate() {
 		this.beforeKeys();
 		prepareDynStats.call(this);
+		
 		if (this.meta.physics.gravity) { // Apply gravity if exists
 			if (this.meta.physics.gravity instanceof Function) {
 				// Custom Gravity Function
@@ -200,8 +204,9 @@ class Prop extends BasicProp {
 
 		if (Math.abs(this.yv)>this.terminalVelocity)
 			this.yv = (this.yv < 0) ? -this.terminalVelocity : this.terminalVelocity;
-		if (Math.abs(this.xv)>this.maxSpeed)
+		if (Math.abs(this.xv)>this.maxSpeed) {
 			this.xv = (this.xv < 0) ? -this.maxSpeed : this.maxSpeed;
+		}
 		if (this.meta.physics?.drag) {
 			this.xv *= this.meta.physics.drag;
 			if (!this.meta.physics.gravity) this.yv *= this.meta.physics.drag;
@@ -321,17 +326,17 @@ function collisionRemoveVelocity(colProps) {
 		// If left side collision
 		switch (res[0]) {
 			case "left":
-				this.x = (i.x - this.w);
+				this.x = (i.x - this.w)-1;
 				this.xv *= i.meta.physics.collisionRoughness; break;
 			case "right":
-				this.x = (i.x + i.w);
+				this.x = (i.x + i.w)+1;
 				this.xv *= i.meta.physics.collisionRoughness; break;
 			case "top":
-				this.y = (i.y - this.h);
+				this.y = (i.y - this.h)-1;
 				this.yv *= i.meta.physics.collisionRoughness; break;
 				//this.yv = 0; break;
 			case "bottom":
-				this.y = (i.y + i.h);
+				this.y = (i.y + i.h)+1;
 				this.yv *= i.meta.physics.collisionRoughness; break;
 		}
 	}
