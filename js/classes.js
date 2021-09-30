@@ -15,7 +15,6 @@ class AbstractObject {
 }
 
 class Camera extends AbstractObject {
-	#active;
 	static instances = [];
 
 	constructor(x=0, y=0, extra) {
@@ -23,11 +22,20 @@ class Camera extends AbstractObject {
 		this.active = false,
 		this.w = extra?.w ?? cx,
 		this.h = extra?.h ?? cy;
+		this.type = extra?.type ?? [];
+
+		this.type.append("Camera"); // All cameras have type "Camera"
 		Camera.instances.push(this);
+
+		// Make active camera if none exists
+		if (!Camera.instances.some((v)=>v.active) &&
+			// WILL NOT AUTO-ACTIVATE IF EXTRA EXPLICITLY SETS STATUS!
+			extra?.active !== false) this.active = true;
 	}
 
-	static test() {
-		//
+	static getActiveCamera() {
+		// Returns active camera, and if there's no active, returns null.
+		return Camera.instances.filter((v)=>v.active)?.[0] ?? null;
 	}
 
 	setCameraViewport(w,h) {}
