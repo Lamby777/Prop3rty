@@ -9,7 +9,7 @@
 
 // Initialize Variables
 
-var lastFramecount, fps,
+var lastFramecount, fps, SRC_DIR,
 	cx, cy, sx, sy, // Canvas w/h and stretching
 	props = [],
 	level = {

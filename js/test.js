@@ -1,7 +1,8 @@
 "use strict";
 
 // GAME CODE
-// Ground is an immovable prop
+
+SRC_DIR = "/src/"; // Folder of game assets
 
 var ground = new Prop(0, 400, 500, 400, {
 	border: {size: 4},
@@ -47,11 +48,12 @@ var bruh = new Prop(64, 100, 32, 32, {
 	maxSpeed: 5,
 	meta: {
 		physics: {
-			acceleration: 0.05,
+			acceleration: 1,
 		},
 	},
 });
 bruh.color("red");
+bruh.image("karel.png");
 //bruh.meta.physics.gravity = null;
 
 
@@ -69,6 +71,10 @@ var bruh2 = new Prop(128, 100, 32, 32, {
 bruh2.color("aqua");
 
 sortProps();
+
+/*bindToGame("tick", () => {
+	//
+});*/
 
 bindKey("KeyW", "down", ()=>{
 	bruh.yv = 5;
