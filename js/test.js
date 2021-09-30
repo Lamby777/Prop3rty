@@ -40,7 +40,7 @@ ground2.drawLayer = 400;/**/
 
 
 
-var bruh = new Prop(64, 100, 32, 32, {
+var bruh = new Prop(64, 100, 48, 48, {
 	border: {size: 4},
 	name: "Bruh Cube",
 	type: ["Player"],
