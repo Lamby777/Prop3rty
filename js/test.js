@@ -35,11 +35,11 @@ var ground2 = new Prop(0, 0, 500, 50, {
 });
 ground2.wf = (() => cx);
 ground2.color("green");
-ground2.drawLayer = 400;
+ground2.drawLayer = 400;/**/
 
 
 
-var bruh = new Prop(64, 200, 32, 32, {
+var bruh = new Prop(64, 100, 32, 32, {
 	border: {size: 4},
 	name: "Bruh Cube",
 	type: ["Player"],
@@ -55,7 +55,7 @@ bruh.color("red");
 //bruh.meta.physics.gravity = null;
 
 
-var bruh2 = new Prop(128, 0, 32, 32, {
+var bruh2 = new Prop(128, 100, 32, 32, {
 	border: {size: 4},
 	name: "Bruh Cube #2",
 	collisionLayers: [1],
@@ -66,7 +66,7 @@ var bruh2 = new Prop(128, 0, 32, 32, {
 		},
 	},
 });
-bruh2.color("orange");
+bruh2.color("aqua");
 
 sortProps();
 

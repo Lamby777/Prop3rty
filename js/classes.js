@@ -1,7 +1,7 @@
 "use strict";
 
 // Constants
-const DEFAULT_DRAG = 0.8;
+const DEFAULT_DRAG = 0.8; //0.8;
 
 
 // Prop Classes
@@ -248,11 +248,10 @@ class Prop extends BasicProp {
 				this.x = (cx - this.w) - 1;
 			}
 		}
-
-		this.controlKeys();
 	}
 
 	update() {
+		this.controlKeys();
 		this.applyVelocity();
 		super.update();
 	}
