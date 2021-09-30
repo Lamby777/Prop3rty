@@ -14,6 +14,22 @@ class AbstractObject {
 	}
 }
 
+class Camera extends AbstractObject {
+	#active = false;
+
+	constructor(x=0, y=0, extra) {
+		super(x, y, extra);
+		this.w = extra?.w ?? cx,
+		this.h = extra?.h ?? cy;
+	}
+
+	static test() {
+		//
+	}
+
+	setCameraViewport(w,h) {}
+}
+
 class BasicProp extends AbstractObject {
 	constructor(x=0, y=0, w=16, h=16, extra) {
 		super(x, y, extra);
@@ -152,6 +168,7 @@ class Prop extends BasicProp {
 		this.maxSpeed = extra?.maxSpeed ?? 10,
 		this.terminalVelocity = extra?.terminalVelocity ?? 20,
 		this.collisionLayers = extra?.collisionLayers ?? [];
+		this.currentCollisions = 0;
 		Object.assign(this.meta, {
 			screenWrap: false,
 			borderBypassX: true,
@@ -201,10 +218,14 @@ class Prop extends BasicProp {
 				);
 			});
 
+			this.currentCollisions = colProps.length;
 			collisionRemoveVelocity.call(this, colProps);
 		}
 
 		this.controlKeys();
+
+		//let x3 = getPropsByName("Bruh Cube")[0].yv;
+		//if (x3 !== 0) console.log(x3);
 
 		if (this.sheet) this.animate();
 	}
@@ -216,11 +237,8 @@ class Prop extends BasicProp {
 
 		// Border bypass and screen wrapping
 		if (!this.meta.borderBypassX) {
-			if (this.x + this.w > cx) {
-				this.x = cx - this.w;
-			} else if (this.x < 0) {
-				this.x = 0;
-			}
+			if (this.x + this.w > cx)	this.x = cx - this.w;
+			else if (this.x < 0)		this.x = 0;
 		}
 
 		if (this.meta.screenWrap) {
@@ -230,10 +248,11 @@ class Prop extends BasicProp {
 				this.x = (cx - this.w) - 1;
 			}
 		}
+
+		this.controlKeys();
 	}
 
 	update() {
-		this.controlKeys();
 		this.applyVelocity();
 		super.update();
 	}
@@ -306,15 +325,15 @@ function collisionRemoveVelocity(colProps) {
 				this.x = (i.x - this.w);
 				this.xv *= i.meta.physics.collisionRoughness; break;
 			case "right":
-				this.x = (i.x + this.w);
+				this.x = (i.x + i.w);
 				this.xv *= i.meta.physics.collisionRoughness; break;
 			case "top":
 				this.y = (i.y - this.h);
 				this.yv *= i.meta.physics.collisionRoughness; break;
 				//this.yv = 0; break;
 			case "bottom":
-				this.y = (i.y + this.h);
+				this.y = (i.y + i.h);
 				this.yv *= i.meta.physics.collisionRoughness; break;
 		}
-	}/**/
+	}
 }

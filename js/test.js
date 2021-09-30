@@ -21,7 +21,25 @@ ground.color("green");
 ground.drawLayer = 400;
 
 
-var bruh = new Prop(64, 0, 32, 32, {
+var ground2 = new Prop(0, 0, 500, 50, {
+	border: {size: 4},
+	name: "Ceiling",
+	type: ["Environment"],
+	collisionLayers: [1],
+	meta: {
+		physics: {
+			immovable: true,
+			gravity: null,
+		},
+	},
+});
+ground2.wf = (() => cx);
+ground2.color("green");
+ground2.drawLayer = 400;
+
+
+
+var bruh = new Prop(64, 200, 32, 32, {
 	border: {size: 4},
 	name: "Bruh Cube",
 	type: ["Player"],

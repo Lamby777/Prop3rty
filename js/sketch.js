@@ -59,7 +59,9 @@ function update() {
 function redrawProps() {
 	for (let prop of props) {
 		prop.prepareUpdate?.();
-	} for (let prop of props) {
+	}
+	
+	for (let prop of props) {
 		prop.update?.();
 	}
 }
