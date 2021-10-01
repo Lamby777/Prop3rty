@@ -163,7 +163,7 @@ class BasicProp extends AbstractProp {
 	}
 	
 	afterKeys() {
-		for (let key of Object.keys(afterKeyActions)) {
+		for (const key of Object.keys(afterKeyActions)) {
 			if (currentKeys.includes(key))
 				afterKeyActions[key].forEach((f)=>{f()});
 		}
@@ -271,14 +271,14 @@ class Prop extends BasicProp {
 	}
 
 	beforeKeys() {
-		for (let key of Object.keys(beforeKeyActions)) {
+		for (const key of Object.keys(beforeKeyActions)) {
 			if (currentKeys.includes(key))
 				beforeKeyActions[key].forEach((f)=>{f()});
 		}
 	}
 
 	controlKeys() {
-		for (let key of Object.keys(controlKeyActions)) {
+		for (const key of Object.keys(controlKeyActions)) {
 			if (currentKeys.includes(key))
 				controlKeyActions[key].forEach((f)=>{f()});
 		}
@@ -322,7 +322,7 @@ function prepareDynput(...args) {
 }
 
 function prepareDynStats() {
-	for (let i of ["x", "y", "w", "h"]) {
+	for (const i of ["x", "y", "w", "h"]) {
 		if (this?.[i+"f"] instanceof Function) {
 			this[i] = this[i+"f"]();
 		}
@@ -335,13 +335,13 @@ function prepareDynamics() {
 		Object.keys(this.dynamics).length) return;
 	
 	// Apply each dynamic
-	for (let dynamic in this.dynamics) {
+	for (const dynamic in this.dynamics) {
 		this[dynamic] = dynamics[dynamic];
 	}
 }
 
 function collisionRemoveVelocity(colProps) {
-	for (let i of colProps) {
+	for (const i of colProps) {
 		let res = this.collisionsWith(i);
 		// If left side collision
 		switch (res[0]) {

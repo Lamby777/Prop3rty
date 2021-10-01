@@ -57,11 +57,11 @@ function update() {
 }
 
 function redrawProps() {
-	for (let prop of props) {
+	for (const prop of props) {
 		prop.prepareUpdate?.();
 	}
 	
-	for (let prop of props) {
+	for (const prop of props) {
 		prop.update?.();
 	}
 }
