@@ -9,7 +9,7 @@ const DEFAULT_DRAG = 0.8; //0.8;
 class AbstractProp {
 	constructor(x=0, y=0, extra) {
 		this.x = x, this.y = y,
-		this.dynamics = {},
+		this.dynamics = extra?.dynamics ?? {},
 		this.name = extra?.name ?? null, // undefined big bad
 		this.type = extra?.type ?? ["Generic"];
 		prepareDynamics.call(this);
