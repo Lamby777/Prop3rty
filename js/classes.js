@@ -12,6 +12,7 @@ class AbstractProp {
 		this.dynamics = {},
 		this.name = extra?.name ?? null, // undefined big bad
 		this.type = extra?.type ?? ["Generic"];
+		prepareDynamics.call(this);
 	}
 }
 
@@ -332,11 +333,11 @@ function prepareDynStats() {
 function prepareDynamics() {
 	// Check if dynamics is valid
 	if ((!this.dynamics instanceof Object) ||
-		Object.keys(this.dynamics).length) return;
+		Object.keys(this.dynamics).length < 1) return;
 	
 	// Apply each dynamic
 	for (const dynamic in this.dynamics) {
-		this[dynamic] = dynamics[dynamic];
+		this[dynamic] = this.dynamics[dynamic]();
 	}
 }
 

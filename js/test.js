@@ -16,8 +16,10 @@ var ground = new Prop(0, 400, 500, 400, {
 		},
 	},
 });
-ground.yf = (() => cy*0.7);
-ground.wf = (() => cx);
+ground.dynamics = {
+	y: (() => cy*0.7),
+	w: (() => cx),
+}
 ground.color("green");
 ground.drawLayer = 400;
 
@@ -34,7 +36,9 @@ var ground2 = new Prop(0, 0, 500, 50, {
 		},
 	},
 });
-ground2.wf = (() => cx);
+ground.dynamics = {
+	w: (() => cx),
+}
 ground2.color("green");
 ground2.drawLayer = 400;/**/
 
