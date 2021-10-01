@@ -21,7 +21,7 @@ class Camera extends AbstractProp {
 
 	constructor(x=0, y=0, extra) {
 		super(x, y, extra);
-		this.active = false,
+		this.active = extra?.active && false,
 		this.w = extra?.w ?? cx,
 		this.h = extra?.h ?? cy;
 		this.type = extra?.type ?? [];
@@ -30,7 +30,7 @@ class Camera extends AbstractProp {
 		Camera.instances.push(this);
 
 		// Make active camera if none exists
-		if (!Camera.instances.some((v)=>v.active) &&
+		if (!Camera.instances.some((v)=>v.active) && // Will catch self
 			// WILL NOT AUTO-ACTIVATE IF EXTRA EXPLICITLY SETS STATUS!
 			extra?.active !== false) this.active = true;
 	}
