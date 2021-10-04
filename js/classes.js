@@ -35,6 +35,8 @@ class Camera extends AbstractProp {
 			extra?.active !== false) this.active = true;
 	}
 
+	setActive() {}
+
 	static getActiveCamera() {
 		// Returns active camera, and if there's no active, returns null.
 		return Camera.instances.filter((v)=>v.active)?.[0] ?? null;
